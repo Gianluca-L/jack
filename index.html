@@ -533,21 +533,21 @@ game.state.add('Credits', CreditsState);
 var TutorialState = {
   preload: function() {
       game.stage.backgroundColor = '#569cb7';
-      game.load.baseURL = 'http://examples.phaser.io/assets/';
-      game.load.crossOrigin = 'anonymous';
-      game.load.image('Tutorial_image', 'http://127.0.0.1/img/tutorial_image.png');
-      game.load.image('tutorial_ground', 'http://127.0.0.1/img/tutorial_ground.png');
-      game.load.image('tutorial_ground_v', 'http://127.0.0.1/img/tutorial_ground_v.png');
-      game.load.image('t_platform', 'http://127.0.0.1/img/t_platform.png');
-      game.load.image('t_platform_inv', 'http://127.0.0.1/img/t_platform_inv.png');
-      game.load.image('tutorial_win', 'http://127.0.0.1/img/tutorial_win.png');
-      game.load.image('GREAT', 'http://127.0.0.1/img/GREAT.png');
-      game.load.image('back', 'http://127.0.0.1/img/back.png');
-      game.load.image('next_tutorial', 'http://127.0.0.1/img/next_tutorial.png');
+      //game.load.baseURL = 'http://examples.phaser.io/assets/';
+      //game.load.crossOrigin = 'anonymous';
+      game.load.image('Tutorial_image', 'img/tutorial_image.png');
+      game.load.image('tutorial_ground', 'img/tutorial_ground.png');
+      game.load.image('tutorial_ground_v', 'img/tutorial_ground_v.png');
+      game.load.image('t_platform', 'img/t_platform.png');
+      game.load.image('t_platform_inv', 'img/t_platform_inv.png');
+      game.load.image('tutorial_win', 'img/tutorial_win.png');
+      game.load.image('GREAT', 'img/GREAT.png');
+      game.load.image('back', 'img/back.png');
+      game.load.image('next_tutorial', 'img/next_tutorial.png');
       game.load.image('player', 'sprites/phaser-dude.png');
-      game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
-      game.load.image('home', 'http://127.0.0.1/img/home.png');
-      game.load.image('freccia_n', 'http://127.0.0.1/img/freccia_n.png');
+      game.load.spritesheet('jack', 'img/jack.png', 35.2, 59);
+      game.load.image('home', 'img/home.png');
+      game.load.image('freccia_n', 'img/freccia_n.png');
 
   },
   create: function() {
@@ -790,26 +790,26 @@ game.state.add('Tutorial', TutorialState);
 var Tutorial2State = {
   preload: function() {
       game.stage.backgroundColor = '#569cb7';
-      game.load.baseURL = 'http://examples.phaser.io/assets/';
-      game.load.crossOrigin = 'anonymous';
-      game.load.image('freccia_n', 'http://127.0.0.1/img/freccia_n.png');
-      game.load.image('Tutorial2_image', 'http://127.0.0.1/img/tutorial2_image.png');
-      game.load.image('tutorial_ground', 'http://127.0.0.1/img/tutorial_ground.png');
-      game.load.image('tutorial_ground_v', 'http://127.0.0.1/img/tutorial_ground_v.png');
-      game.load.image('home', 'http://127.0.0.1/img/home.png');
-      game.load.image('t_platform', 'http://127.0.0.1/img/t_platform.png');
-      game.load.image('t_platform_inv', 'http://127.0.0.1/img/t_platform_inv.png');
-      game.load.image('tutorial_win', 'http://127.0.0.1/img/tutorial_win.png');
-      game.load.image('GREAT', 'http://127.0.0.1/img/GREAT.png');
-      game.load.image('tutorial_start', 'http://127.0.0.1/img/tutorial_start.png');
-      game.load.image('next_over', 'http://127.0.0.1/img/next_over.png');
-      game.load.image('back', 'http://127.0.0.1/img/back.png');
-      game.load.image('START!', 'http://127.0.0.1/img/START!.png');
+      //game.load.baseURL = 'http://examples.phaser.io/assets/';
+      //game.load.crossOrigin = 'anonymous';
+      game.load.image('freccia_n', 'img/freccia_n.png');
+      game.load.image('Tutorial2_image', 'img/tutorial2_image.png');
+      game.load.image('tutorial_ground', 'img/tutorial_ground.png');
+      game.load.image('tutorial_ground_v', 'img/tutorial_ground_v.png');
+      game.load.image('home', 'img/home.png');
+      game.load.image('t_platform', 'img/t_platform.png');
+      game.load.image('t_platform_inv', 'img/t_platform_inv.png');
+      game.load.image('tutorial_win', 'img/tutorial_win.png');
+      game.load.image('GREAT', 'img/GREAT.png');
+      game.load.image('tutorial_start', 'img/tutorial_start.png');
+      game.load.image('next_over', 'img/next_over.png');
+      game.load.image('back', 'img/back.png');
+      game.load.image('START!', 'img/START!.png');
       game.load.image('player', 'sprites/phaser-dude.png');
-      game.load.spritesheet('light_sparkle', 'http://127.0.0.1/img/light_sparkle.png', 60, 60);
-      game.load.spritesheet('energy_bean', 'http://127.0.0.1/img/heal_002.png', 192, 192);
-      game.load.spritesheet('brillo', 'http://127.0.0.1/img/brillo.png', 110, 110);
-      game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
+      game.load.spritesheet('light_sparkle', 'img/light_sparkle.png', 60, 60);
+      game.load.spritesheet('energy_bean', 'img/heal_002.png', 192, 192);
+      game.load.spritesheet('brillo', 'img/brillo.png', 110, 110);
+      game.load.spritesheet('jack', 'img/jack.png', 35.2, 59);
 
   },
   create: function() {
