@@ -1,0 +1,4832 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+        body {
+          background-color: black;
+        }
+        canvas {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+        }
+        </style>
+        <title>Phaser Game!</title>
+        <script src="phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+      /**
+       * Generated from the Phaser Sandbox
+       *
+       * //phaser.io/sandbox/LArXteSJ
+       *
+       * This source requires Phaser 2.6.2
+       */
+
+      //var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+      var game = new Phaser.Game(1024, 768, Phaser.AUTO, '');
+
+// MENU
+var cover_image;
+var ground_0_v;
+var startSprite;
+var level_1Sprite;
+var level_2Sprite;
+var choose_level_Sprite;
+var Beanstalk;
+var cloud;
+var time;
+var title;
+// TUTORIAL
+var next;
+var next_over;
+var t_1;
+var t_2;
+var score_player_a = 1;
+// LEVELL 1
+var player;
+var platforms;
+var cursors;
+var jumpButton;
+var exitlight;
+var score_exitlight = 1;
+var score_platforms_death = 1;
+var score_ground = 1;
+var platformBounce;
+var explosions;
+var ground;
+var bean;
+var energy;
+var rain;
+var rain_splash;
+var wind;
+var shadow;
+// Lv 2
+var exit_2;
+/*var weapon;
+var fireButton;
+var ant;
+var time_weapon;
+var object_0;
+var bullet;*/
+var door;
+var cloud_2;
+var entrance_stairs;
+var ground_2;
+var score_Bean = 3;
+var score_BeanText;
+var superJump = 0;
+var s1;
+var s2;
+var s3;
+var s4;
+var table_plane;
+//var bar_chair;
+var pot_front;
+var pot1;
+var pot2;
+var pauseESC;
+var score_pauseESC = 1;
+var tub;
+var giant;
+var bathroom_ground;
+var duckie_1;
+var oxygen_bar;
+
+var oxygen;
+var graphics;
+var player_head;
+var player_group;
+var b1;
+var b2;
+var some_objects;
+var toothbrush;
+
+/////////////////////////////////////////////////////////////////////////////////////////  cover
+
+var StartState = {
+  preload: function() {
+      game.stage.backgroundColor = '#569cb7';
+      game.load.baseURL = 'http://examples.phaser.io/assets/';
+      game.load.crossOrigin = 'anonymous';
+      //game.load.image('open', 'http://localhost/img/open.jpg');
+      game.load.image('cover', 'http://127.0.0.1/img/cover.png');
+      game.load.image('copertina', 'http://127.0.0.1/img/copertina.png');
+      game.load.image('start', 'http://127.0.0.1/img/start.png');
+      //game.load.image('controls', 'http://127.0.0.1/img/controls.png');
+      game.load.image('authors', 'http://127.0.0.1/img/authors.png');
+      game.load.image('credits', 'http://127.0.0.1/img/credits.png');
+    /*  game.load.image('title', 'http://localhost/img/title-01.png');
+      game.load.image('title_2', 'http://localhost/img/title_2.png');
+      game.load.image('start', 'http://localhost/img/start.png');
+      game.load.image('choose_level', 'http://localhost/img/choose_level.png');
+      game.load.image('level_1', 'http://localhost/img/level_1.png');
+      game.load.image('level_2', 'http://localhost/img/level_2.png');
+      game.load.image('ground_0', 'http://localhost/img/ground_0.png');
+      game.load.image('ground_0_v', 'http://localhost/img/ground_0_v.png');
+      game.load.image('rain', 'sprites/rain.png');
+      game.load.image('cloud', 'particlestorm/cloud.png');
+      game.load.image('beanstalk', 'http://localhost/img/beanstalk-01.png');
+      game.load.spritesheet('rain_splash', 'http://localhost/img/sprite-splash.png', 20, 20);*/
+  },
+  create: function() {
+
+      game.world.setBounds(0, 0, 1024, 768);
+      //image = game.add.sprite(0, 0, 'open');
+      cover_image = game.add.sprite(game.world.centerX, game.world.centerY, 'copertina');
+      cover_image.anchor.set(0.5);
+      cover_image.inputEnabled = true;
+      //cover_image.events.onInputDown.add(this.imageClick, this);
+      //scoreCandies = 10;
+      //scoreToothbrushes = 10;
+      //jump = 200;
+
+      // MENU
+
+      menù = game.add.physicsGroup();
+      menù.enableBody = true;
+
+      start = menù.create(790, 430, 'start'); //13x89
+      start.inputEnabled = true;
+      start.events.onInputDown.add(this.startClick, this);
+
+      /*controls = menù.create(624, 370, 'controls'); //13x89
+      controls.inputEnabled = true;
+      controls.events.onInputDown.add(this.controlsClick, this);*/
+
+      authors = menù.create(500, 335, 'authors'); //13x89
+      authors.inputEnabled = true;
+      authors.events.onInputDown.add(this.authorsClick, this);
+
+      credits = menù.create(360, 530, 'credits'); //13x89
+      credits.inputEnabled = true;
+      credits.events.onInputDown.add(this.creditsClick, this);
+
+      menù.setAll('body.immovable', true);
+
+     goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+     goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+     goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+     goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+  },
+  /*imageClick: function(pointer) {
+      this.game.state.start('Game1');
+  },*/
+  startClick: function(pointer) {
+      this.game.state.start('Tutorial');
+  },
+  controlsClick: function(pointer) {
+      this.game.state.start('Controls');
+  },
+  authorsClick: function(pointer) {
+      this.game.state.start('Authors');
+  },
+  creditsClick: function(pointer) {
+      this.game.state.start('Credits');
+  },
+  /*choose_level_imageClick: function(pointer) {
+    var Level_1Sprite = level_1Sprite.create(game.world.width - 325, 550, 'level_1');
+    var Level_2Sprite = level_2Sprite.create(game.world.width - 325, 650, 'level_2');
+    Level_1Sprite.inputEnabled = true;
+    Level_1Sprite.events.onInputDown.add(this.level_1Sprite_imageClick, this);
+    Level_2Sprite.inputEnabled = true;
+    Level_2Sprite.events.onInputDown.add(this.level_2Sprite_imageClick, this);
+  },
+  level_1Sprite_imageClick: function(Level_1Sprite, pointer) {
+      this.game.state.start('Game1');
+  },
+  level_2Sprite_imageClick: function(Level_2Sprite, pointer) {
+      this.game.state.start('Game2');
+  },
+  timeCounter: function() {
+    time--;
+    text.setText('Timer: ' + time);
+    if(time===0)
+        Beanstalk.growing = true;
+        if(time===-11)
+            game.add.tween(title).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+            if(time===-13)
+                game.add.tween(title_2).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 0, false);
+  },*/
+
+update: function() {
+
+      //game.physics.arcade.overlap(ground_0, rain, this.rainGround_0, null, this);
+      //game.physics.arcade.overlap(ground_0_v, rain, this.rainGround_0_v, null, this);
+
+      //Beanstalk.body.velocity.y = -170*0.9;
+
+      /*if (startSprite.input.pointerOver())
+      {
+         startSprite.tint = 0xe5ac11;
+         startSprite.scale.setTo(1.05, 1.05);
+      }
+      else
+      {
+         startSprite.tint = 0xffffff;
+         startSprite.scale.setTo(1, 1);
+      }
+      if (choose_level_Sprite.input.pointerOver())
+      {
+         choose_level_Sprite.tint = 0xe5ac11;
+         choose_level_Sprite.scale.setTo(1.05, 1.05);
+      }
+      else
+      {
+         choose_level_Sprite.tint = 0xffffff;
+         choose_level_Sprite.scale.setTo(1, 1);
+      }*/
+      //////////////////// MENU
+      /////// START
+      if (start.input.pointerOver())
+      {
+         //start.tint = 0xe5ac11;
+         start.scale.setTo(1, 1);
+      }
+      else
+      {
+         //start.tint = 0xffffff;
+         start.scale.setTo(0.95, 0.95);
+      }
+      /////// CONTROLS
+      /*if (controls.input.pointerOver())
+      {
+         controls.scale.setTo(1.05, 1.05);
+      }
+      else
+      {
+         controls.scale.setTo(1, 1);
+      }*/
+      /////// AUTHORS
+      if (authors.input.pointerOver())
+      {
+         authors.scale.setTo(1, 1);
+      }
+      else
+      {
+         authors.scale.setTo(0.95, 0.95);
+      }
+      /////// CREDITS
+      if (credits.input.pointerOver())
+      {
+         credits.scale.setTo(1, 1);
+      }
+      else
+      {
+         credits.scale.setTo(0.95, 0.95);
+      }
+      //////////////////////////////////////////////SHORTCUTS
+      if (goToTut.isDown)
+      {
+          this.game.state.start('Tutorial');
+      }
+      if (goToLv1.isDown)
+      {
+          this.game.state.start('Game1');
+      }
+      if (goToLv2.isDown)
+      {
+          this.game.state.start('Game2');
+      }
+      if (goToLv3.isDown)
+      {
+          this.game.state.start('Game3');
+      }
+      /*if (Level_1Sprite.input.pointerOver())
+      {
+         level_1Sprite.setAll('tint', 0xe5ac11);
+         level_1Sprite.scale.setTo(1.05, 1.05);
+      }
+      else
+      {
+         level_1Sprite.tint = 0xffffff;
+         level_1Sprite.scale.setTo(1, 1);
+      }
+      if (Level_2Sprite.input.pointerOver())
+      {
+         level_2Sprite.tint = 0xe5ac11;
+         level_2Sprite.scale.setTo(1.05, 1.05);
+      }
+      else
+      {
+         level_2Sprite.tint = 0xffffff;
+         level_2Sprite.scale.setTo(1, 1);
+      }*/
+      /*if(Math.random()<0.9) {  //<0.015
+      //for (var i = 0; i < 50; i++) {
+        var Rain = rain.create(1300*Math.random(), -200, 'rain');
+        Rain.body.gravity.y = 300;  //60*Math.random()
+        Rain.angle = 30;
+        Rain.body.velocity.x = -100;  //100*(Math.random()-0.5)
+        //Rain.body.bounce.y = 0.7 + Math.random() * 0.2;
+        //Rain.scale.setTo(1*Math.random(), 1*Math.random());
+        Rain.scale.setTo(0.7, 0.7);
+      }*/
+      },
+      /*rainGround_0: function (ground_0, rain) {
+        rain.kill();
+
+        var Rain_splash = rain_splash.getFirstExists(false);
+        Rain_splash.reset(rain.body.x, rain.body.y);
+        Rain_splash.play('rain_splash', 30, false, true);
+
+        rain.destroy();
+      },
+      rainGround_0_v: function (ground_0_v, rain) {
+        rain.kill();
+        rain.destroy();
+      },*/
+
+render: function() {
+      //game.debug.spriteCoords(Beanstalk, 32, 32);
+      //game.debug.body(Beanstalk);
+  },
+}
+
+game.state.add('Start', StartState);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// CONTROLS
+
+var controlsState = {
+        preload: function() {
+            game.load.crossOrigin = 'anonymous';
+            game.load.image('controls_page', 'http://127.0.0.1/img/controls_page.png');
+            game.load.image('backToMenu', 'http://127.0.0.1/img/backToMenu.png');
+            game.load.image('home', 'http://127.0.0.1/img/home.png');
+        },
+
+        create: function() {
+            game.world.setBounds(0, 0, 1024, 768);
+
+            image = game.add.sprite(0, 0, 'controls_page');
+
+            home = game.add.sprite(107, 24, 'home');
+            home.inputEnabled = true;
+            home.events.onInputDown.add(this.homeClick, this);
+
+
+        },
+        homeClick: function(pointer) {
+            this.game.state.start('Start');
+        },
+
+        update: function() {
+
+              //////////////////////////////////////////////SHORTCUTS
+              if (goToTut.isDown)
+              {
+                  this.game.state.start('Tutorial');
+              }
+              if (goToLv1.isDown)
+              {
+                  this.game.state.start('Game1');
+              }
+              if (goToLv2.isDown)
+              {
+                  this.game.state.start('Game2');
+              }
+              if (goToLv3.isDown)
+              {
+                  this.game.state.start('Game3');
+              }
+              },
+
+        }
+
+game.state.add('Controls', controlsState);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// AUTHORS
+
+var AuthorsState = {
+        preload: function() {
+            game.load.crossOrigin = 'anonymous';
+            game.load.image('authors_page', 'http://127.0.0.1/img/authors_page.png');
+            game.load.image('backToMenu', 'http://127.0.0.1/img/backToMenu.png');
+            game.load.image('back', 'http://127.0.0.1/img/back.png');
+            game.load.image('home', 'http://127.0.0.1/img/home.png');
+        },
+
+        create: function() {
+            game.world.setBounds(0, 0, 1024, 768);
+
+            image = game.add.sprite(0, 0, 'authors_page');
+
+            home = game.add.sprite(107, 24, 'home');
+            home.inputEnabled = true;
+            home.events.onInputDown.add(this.homeClick, this);
+
+
+        },
+        homeClick: function(pointer) {
+            this.game.state.start('Start');
+        },
+
+        update: function() {
+
+              /////// BACK TO THE MENU
+              /*if (back.input.pointerOver())
+              {
+                 //start.tint = 0xe5ac11;
+                 back.scale.setTo(1.05, 1.05);
+              }
+              else
+              {
+                 //start.tint = 0xffffff;
+                 back.scale.setTo(1, 1);
+              }*/
+              //////////////////////////////////////////////SHORTCUTS
+              if (goToTut.isDown)
+              {
+                  this.game.state.start('Tutorial');
+              }
+              if (goToLv1.isDown)
+              {
+                  this.game.state.start('Game1');
+              }
+              if (goToLv2.isDown)
+              {
+                  this.game.state.start('Game2');
+              }
+              if (goToLv3.isDown)
+              {
+                  this.game.state.start('Game3');
+              }
+              },
+
+        }
+
+game.state.add('Authors', AuthorsState);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// CREDITS
+
+var CreditsState = {
+        preload: function() {
+            game.load.crossOrigin = 'anonymous';
+            game.load.image('credits_page', 'http://127.0.0.1/img/credits_page.png');
+            game.load.image('backToMenu', 'http://127.0.0.1/img/backToMenu.png');
+            game.load.image('back', 'http://127.0.0.1/img/back.png');
+            game.load.image('home', 'http://127.0.0.1/img/home.png');
+
+        },
+
+        create: function() {
+            game.world.setBounds(0, 0, 1024, 768);
+
+            image = game.add.sprite(0, 0, 'credits_page');
+
+
+            home = game.add.sprite(107, 24, 'home');
+            home.inputEnabled = true;
+            home.events.onInputDown.add(this.homeClick, this);
+
+
+        },
+        homeClick: function(pointer) {
+            this.game.state.start('Start');
+        },
+
+        update: function() {
+
+              /////// BACK TO THE MENU
+              /*if (back.input.pointerOver())
+              {
+                 //start.tint = 0xe5ac11;
+                 back.scale.setTo(1.05, 1.05);
+              }
+              else
+              {
+                 //start.tint = 0xffffff;
+                 back.scale.setTo(1, 1);
+              }*/
+              //////////////////////////////////////////////SHORTCUTS
+              if (goToTut.isDown)
+              {
+                  this.game.state.start('Tutorial');
+              }
+              if (goToLv1.isDown)
+              {
+                  this.game.state.start('Game1');
+              }
+              if (goToLv2.isDown)
+              {
+                  this.game.state.start('Game2');
+              }
+              if (goToLv3.isDown)
+              {
+                  this.game.state.start('Game3');
+              }
+              },
+
+        }
+
+game.state.add('Credits', CreditsState);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////// TUTORIAL
+
+var TutorialState = {
+  preload: function() {
+      game.stage.backgroundColor = '#569cb7';
+      game.load.baseURL = 'http://examples.phaser.io/assets/';
+      game.load.crossOrigin = 'anonymous';
+      game.load.image('Tutorial_image', 'http://127.0.0.1/img/tutorial_image.png');
+      game.load.image('tutorial_ground', 'http://127.0.0.1/img/tutorial_ground.png');
+      game.load.image('tutorial_ground_v', 'http://127.0.0.1/img/tutorial_ground_v.png');
+      game.load.image('t_platform', 'http://127.0.0.1/img/t_platform.png');
+      game.load.image('t_platform_inv', 'http://127.0.0.1/img/t_platform_inv.png');
+      game.load.image('tutorial_win', 'http://127.0.0.1/img/tutorial_win.png');
+      game.load.image('GREAT', 'http://127.0.0.1/img/GREAT.png');
+      game.load.image('back', 'http://127.0.0.1/img/back.png');
+      game.load.image('next_tutorial', 'http://127.0.0.1/img/next_tutorial.png');
+      game.load.image('player', 'sprites/phaser-dude.png');
+      game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
+      game.load.image('home', 'http://127.0.0.1/img/home.png');
+      game.load.image('freccia_n', 'http://127.0.0.1/img/freccia_n.png');
+
+  },
+  create: function() {
+
+      game.world.setBounds(0, 0, 1024, 768);
+
+      score_player_a = 1;
+
+      //image = game.add.sprite(0, 0, 'open');
+      Tutorial_image = game.add.sprite(game.world.centerX, game.world.centerY, 'Tutorial_image');
+      Tutorial_image.anchor.set(0.5);
+      Tutorial_image.inputEnabled = true;
+      //Tutorial_image.events.onInputDown.add(this.imageClick, this);
+
+      freccia_n = game.add.sprite(900, 690, 'freccia_n');
+      freccia_n.inputEnabled = true;
+      freccia_n.events.onInputDown.add(this.freccia_nClick, this);
+
+      home = game.add.sprite(107, 24, 'home');
+      home.inputEnabled = true;
+      home.events.onInputDown.add(this.homeClick, this);
+
+      tutorial_ground = game.add.physicsGroup();
+      tutorial_ground.enableBody = true;
+
+      t_0 = tutorial_ground.create(328, game.world.height - 334 + 277, 'tutorial_ground'); //UP
+      ta_0 = tutorial_ground.create(328, game.world.height - 57 - 277 -50, 'tutorial_ground');  // DOWN
+      tutorial_ground.create(318, game.world.height - 734 + 277, 'tutorial_ground_v');
+      tutorial_ground.create(697, game.world.height - 734 + 277, 'tutorial_ground_v');
+      ///// AUTOMATIC
+      ta_1 = tutorial_ground.create(318, game.world.height - 456 - 277 - 50, 'tutorial_ground_v');
+      ta_2 = tutorial_ground.create(697, game.world.height - 456 - 277 - 50, 'tutorial_ground_v');
+      //t_win = tutorial_ground.create(576, game.world.height - 520, 'tutorial_win'); //111x3
+
+      tutorial_ground.setAll('body.immovable', true);
+
+      t_win = game.add.sprite(576, game.world.height - 520 + 277, 'tutorial_win');
+      game.physics.arcade.enable(t_win);
+      t_win.body.immovable= true;
+
+      /// T_PLATFORMS
+
+      t_platform = game.add.physicsGroup();
+      t_platform.enableBody = true;
+
+      t_1 = t_platform.create(594, game.world.height - 452 + 277, 't_platform'); //13x89
+      t_2 = t_platform.create(430, game.world.height - 520 + 277, 't_platform_inv');
+
+      tAv_1 = t_platform.create(594, game.world.height - 175 - 277 -50, 't_platform'); //13x89
+      tAv_2 = t_platform.create(430, game.world.height - 243 - 277 -50, 't_platform_inv');
+
+      t_platform.setAll('body.immovable', true);
+
+      player = game.add.sprite(328, game.world.height - 386 + 277 - 10, 'jack');   //27x40
+      player.animations.add('right', [6, 7, 8], 10, true);
+      player.animations.add('left', [2, 1, 0], 10, true);
+
+
+      game.physics.arcade.enable(player);
+      //player.scale.setTo(1.3,1.3);
+
+      player.body.collideWorldBounds = true;
+      player.body.gravity.y = 600;
+
+      ////// AUTOMATIC PLAYER
+      aX_pos = 328;
+      aY_pos = game.world.height - 109 - 277 -50 -10;
+      player_a = game.add.sprite(aX_pos, aY_pos, 'jack');   //27x40
+      player_a.animations.add('jackplay', [6, 7, 8], 10, true);
+      player_a.animations.play('jackplay');
+
+      game.physics.arcade.enable(player_a);
+      //player_a.scale.setTo(1.3,1.3);
+      player_a.tint = 0x656363;
+
+      player_a.body.collideWorldBounds = true;
+      player_a.body.gravity.y = 600;
+
+      t_win_a = game.add.sprite(576, game.world.height - 243 - 277 - 50, 'tutorial_win');
+      game.physics.arcade.enable(t_win_a);
+      t_win_a.body.immovable= true;
+
+      great = game.add.sprite(785, game.world.height - 334, 'GREAT');
+      great.alpha = 0;
+
+
+      cursors = game.input.keyboard.createCursorKeys();
+      jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+      pauseESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+
+      goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+      goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+      goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+      goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+      goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+      goToTut2 = game.input.keyboard.addKey(Phaser.Keyboard.Y);
+  },
+  homeClick: function(pointer) {
+      this.game.state.start('Start');
+  },
+  freccia_nClick: function(pointer) {
+      this.game.state.start('Tutorial2');
+  },
+
+update: function() {
+
+      game.physics.arcade.collide(player, tutorial_ground);
+
+      //var hit_t_platform = game.physics.arcade.collide(player, t_platform);
+      var hit_t_1 = game.physics.arcade.collide(player, t_1);
+      var hit_t_2 = game.physics.arcade.collide(player, t_2);
+      var t_winP = game.physics.arcade.collide(player, t_win);
+
+      player.body.velocity.x = 0;
+
+      if (t_winP === false)
+      {
+        if (cursors.left.isDown)
+        {
+            player.body.velocity.x = -250;
+            player.animations.play('left');
+        }
+        else if (cursors.right.isDown)
+        {
+            player.body.velocity.x = 250;
+            player.animations.play('right');
+        }
+        else
+        {
+             player.animations.stop();
+             player.frame = 4;
+        }
+        if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down))
+        {
+            player.body.velocity.y = -300;
+        }
+        if (jumpButton.isDown && cursors.left.isDown && hit_t_1)
+        {
+            player.body.velocity.y = -300;
+        }
+        if (jumpButton.isDown && cursors.right.isDown && hit_t_2)
+        {
+            player.body.velocity.y = -300;
+        }
+      }
+      if (t_winP === true && player.body.touching.down && t_win.body.touching.up  )
+      {
+        player_a.body.enable = false
+        //great = game.add.sprite(785, game.world.height - 334, 'great!'); //182x38
+          great.alpha = 1;
+
+      }
+
+      ///////////////// AUTOMATIC PLAYER
+
+      var ta = game.physics.arcade.collide(player_a, ta_2);
+      game.physics.arcade.collide(player_a, ta_0);
+      game.physics.arcade.collide(player_a, t_0);
+      var hitTav_1 = game.physics.arcade.collide(player_a, tAv_1);
+      var hitTav_2 =game.physics.arcade.collide(player_a, tAv_2);
+      game.physics.arcade.collide(player_a, t_win_a);
+
+      if (score_player_a === 1)
+      {
+        player_a.body.velocity.x = 250;
+      }
+      else if (score_player_a === 0)
+      {
+        player_a.body.velocity.x = -250;
+      }
+
+
+      if (ta === true)
+      {
+        player_a.body.position.x = aX_pos;
+        player_a.body.position.y = aY_pos;
+        score_player_a = 1;
+      }
+      if (player_a.body.position.x > 450 && player_a.body.touching.down && player_a.body.position.x < 550)
+      {
+        player_a.body.velocity.y = -300;
+      }
+      if (hitTav_1 === true)
+      {
+        score_player_a--;
+        player_a.body.velocity.y = -300;
+      }
+      if (hitTav_2 === true)
+      {
+        score_player_a++;
+        player_a.body.velocity.y = -300;
+      }
+
+      if (goToTut2.isDown)
+      {
+         this.game.state.start('Tutorial2');
+      }
+      if (goToTut.isDown)
+      {
+         this.game.state.start('Tutorial');
+      }
+      if (goToLv1.isDown)
+      {
+          this.game.state.start('Game1');
+      }
+      if (goToLv2.isDown)
+      {
+          this.game.state.start('Game2');
+      }
+      if (goToLv3.isDown)
+      {
+          this.game.state.start('Game3');
+      }
+      if (goToCover.isDown)
+      {
+          this.game.state.start('Start');
+      }
+
+      },
+      /*nextClick: function(pointer) {
+          this.game.state.start('Tutorial2');
+      },*/
+
+      nextTutorialClick: function(pointer) {
+          this.game.state.start('Tutorial2');
+      },
+
+
+render: function() {
+      //game.debug.spriteCoords(player);
+      //game.debug.body(Beanstalk);
+  },
+}
+
+game.state.add('Tutorial', TutorialState);
+
+//////////////////// TUTORIAL 2
+
+var Tutorial2State = {
+  preload: function() {
+      game.stage.backgroundColor = '#569cb7';
+      game.load.baseURL = 'http://examples.phaser.io/assets/';
+      game.load.crossOrigin = 'anonymous';
+      game.load.image('freccia_n', 'http://127.0.0.1/img/freccia_n.png');
+      game.load.image('Tutorial2_image', 'http://127.0.0.1/img/tutorial2_image.png');
+      game.load.image('tutorial_ground', 'http://127.0.0.1/img/tutorial_ground.png');
+      game.load.image('tutorial_ground_v', 'http://127.0.0.1/img/tutorial_ground_v.png');
+      game.load.image('home', 'http://127.0.0.1/img/home.png');
+      game.load.image('t_platform', 'http://127.0.0.1/img/t_platform.png');
+      game.load.image('t_platform_inv', 'http://127.0.0.1/img/t_platform_inv.png');
+      game.load.image('tutorial_win', 'http://127.0.0.1/img/tutorial_win.png');
+      game.load.image('GREAT', 'http://127.0.0.1/img/GREAT.png');
+      game.load.image('tutorial_start', 'http://127.0.0.1/img/tutorial_start.png');
+      game.load.image('next_over', 'http://127.0.0.1/img/next_over.png');
+      game.load.image('back', 'http://127.0.0.1/img/back.png');
+      game.load.image('START!', 'http://127.0.0.1/img/START!.png');
+      game.load.image('player', 'sprites/phaser-dude.png');
+      game.load.spritesheet('light_sparkle', 'http://127.0.0.1/img/light_sparkle.png', 60, 60);
+      game.load.spritesheet('energy_bean', 'http://127.0.0.1/img/heal_002.png', 192, 192);
+      game.load.spritesheet('brillo', 'http://127.0.0.1/img/brillo.png', 110, 110);
+      game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
+
+  },
+  create: function() {
+
+      game.world.setBounds(0, 0, 1024, 768);
+
+      score_player_a = 1;
+
+      //image = game.add.sprite(0, 0, 'open');
+      Tutorial_image = game.add.sprite(game.world.centerX, game.world.centerY, 'Tutorial2_image');
+      Tutorial_image.anchor.set(0.5);
+      Tutorial_image.inputEnabled = true;
+      //Tutorial_image.events.onInputDown.add(this.imageClick, this);
+
+      home = game.add.sprite(107, 24, 'home');
+      home.inputEnabled = true;
+      home.events.onInputDown.add(this.homeClick, this);
+
+      freccia_n = game.add.sprite(900, 690, 'freccia_n');
+      freccia_n.inputEnabled = true;
+      freccia_n.events.onInputDown.add(this.freccia_nClick, this);
+
+      tutorial_ground = game.add.physicsGroup();
+      tutorial_ground.enableBody = true;
+
+      t_0 = tutorial_ground.create(328, game.world.height - 334 + 277, 'tutorial_ground'); //UP 369
+      ta_0 = tutorial_ground.create(328, game.world.height - 57 - 277 -50, 'tutorial_ground');  // DOWN
+      tutorial_ground.create(318, game.world.height - 334, 'tutorial_ground_v');
+      tutorial_ground.create(697, game.world.height - 334, 'tutorial_ground_v');
+      ///// AUTOMATIC
+      ta_1 = tutorial_ground.create(318, game.world.height - 456 - 277 -50, 'tutorial_ground_v');
+      ta_2 = tutorial_ground.create(697, game.world.height - 456 - 277 -50, 'tutorial_ground_v');
+      //t_win = tutorial_ground.create(576, game.world.height - 520, 'tutorial_win'); //111x3
+
+      tutorial_ground.setAll('body.immovable', true);
+
+      player = game.add.sprite(328, game.world.height - 386 + 277 -10, 'jack');   //27x40
+      player.animations.add('right', [6, 7, 8], 10, true);
+      player.animations.add('left', [2, 1, 0], 10, true);
+
+
+      game.physics.arcade.enable(player);
+      //player.scale.setTo(1.3,1.3);
+
+      player.body.collideWorldBounds = true;
+      player.body.gravity.y = 600;
+
+      ////// AUTOMATIC PLAYER
+      aX_pos = 328;
+      aY_pos = game.world.height - 109 - 277 -50 -10;
+      player_a = game.add.sprite(aX_pos, aY_pos, 'jack');   //27x40
+      player_a.animations.add('jackplay', [6, 7, 8], 10, true);
+      player_a.animations.add('jackplaystop', [4], 10, true);
+
+      game.physics.arcade.enable(player_a);
+      //player_a.scale.setTo(1.3,1.3);
+      player_a.tint = 0x656363;
+
+      player_a.body.collideWorldBounds = true;
+      player_a.body.gravity.y = 600;
+
+      player_a.jumping = true;
+      player_a.jumping2 = true;
+      player_a.starting = true;
+      player_a.taing = false;
+
+      great = game.add.sprite(785, game.world.height - 334, 'GREAT');
+      great.alpha = 0;
+
+      // BEANS 128x128
+
+      bean = game.add.physicsGroup();
+      bean.enableBody = true;
+
+      //bean.body.setCircle(45);
+
+      bean.create(420, game.world.height - 420 + 277, 'brillo');
+      bean.create(520, game.world.height - 420 + 277, 'brillo');
+      bean.create(620, game.world.height - 420 + 277, 'brillo');
+
+      /////// AUTOMATIC
+      b1_pos = 420, game.world.height - 143;
+      b1 = bean.create(420, game.world.height - 143 - 277 -50, 'brillo');
+      b2 = bean.create(520, game.world.height - 143 - 277 -50, 'brillo');
+      b3 = bean.create(620, game.world.height - 143 - 277 -50, 'brillo');
+
+      bean.setAll('body.immovable', true);  // VA DOPO LE PIATTAFORME
+
+      // BEAN animations
+
+      bean.createMultiple(30, 'brillo');
+      bean.forEach(setupbean, this);
+
+      function setupbean (bean) {
+      bean.anchor.x = 0.5;
+      bean.anchor.y = 0;
+      bean.animations.add('brillo');
+      bean.animations.play('brillo', 15, true);
+      }
+      energy = game.add.group();
+      energy.createMultiple(30, 'energy_bean');
+      energy.forEach(setupBean, this);
+
+      function setupBean (bean) {
+      bean.anchor.x = 0.3;
+      bean.anchor.y = 0.3;
+      bean.animations.add('energy_bean');
+     }
+
+      player_a.animating = true;
+
+      cursors = game.input.keyboard.createCursorKeys();
+      jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+      pauseESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+
+      goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+      goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+      goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+      goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+      goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+      goToTut2 = game.input.keyboard.addKey(Phaser.Keyboard.Y);
+  },
+  homeClick: function(pointer) {
+      this.game.state.start('Start');
+  },
+
+update: function() {
+
+      game.physics.arcade.collide(player, tutorial_ground);
+      game.physics.arcade.overlap(player, bean, this.collectbean, null, this);
+
+      player.body.velocity.x = 0;
+
+        if (cursors.left.isDown)
+        {
+            player.body.velocity.x = -250;
+            player.animations.play('left');
+        }
+        else if (cursors.right.isDown)
+        {
+            player.body.velocity.x = 250;
+            player.animations.play('right');
+        }
+        else
+        {
+             player.animations.stop();
+             player.frame = 4;
+        }
+        if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down))
+        {
+            player.body.velocity.y = -300;
+        }
+        if (superJumpButton.isDown && player.body.touching.down)
+        {
+            player.body.velocity.y = superJump;
+            superJump = 0;
+        }
+      if (player.body.position.y < game.world.height - 57 - 240)
+      {
+        player_a.body.enable = false;
+        player.body.enable = false;
+        great.alpha = 1;
+      }
+
+      ///////////////// AUTOMATIC PLAYER
+
+      var hit_ta_0 = game.physics.arcade.collide(player_a, ta_0);
+      var hit_T0 = game.physics.arcade.collide(player_a, t_0);
+      game.physics.arcade.overlap(player_a, bean, this.collectbean_a, null, this);
+      var hit_ta_2 = game.physics.arcade.collide(player_a, ta_2);
+
+      player_a.body.velocity.x = 0;
+
+      if (player_a.body.velocity.x == 0 && player_a.animating == true)
+      {
+        player_a.animations.play('jackplaystop');
+      }
+
+
+      /*if (player_a.body.touching.down && player_a.jumping === true)
+      {
+          game.time.events.add(Phaser.Timer.SECOND * 1, a_jump, this);
+          function a_jump () {
+          player_a.body.velocity.y = -300;
+          }
+          game.time.events.add(Phaser.Timer.SECOND * 0.1, stopJump, this);
+          function stopJump () {
+          player_a.jumping = false;
+          }
+      }
+      if (player_a.jumping === false)
+      {
+      game.time.events.add(Phaser.Timer.SECOND * 2.5, a_goes, this);
+      function a_goes () {
+      if (player_a.body.position.x < 600)
+      {
+        player_a.body.velocity.x = 250;
+      }
+      }
+    }*/
+        if (player_a.body.position.x < 600)
+        {
+          game.time.events.add(Phaser.Timer.SECOND * 1, starta, this);
+          function starta () {
+            {
+              player_a.animating = false;
+              player_a.body.velocity.x = 250;
+              player_a.animations.play('jackplay');
+            }
+        }
+      }
+
+      if(player_a.body.position.x === 603)
+      {
+        game.time.events.add(Phaser.Timer.SECOND * 0.5, a_superJump, this);
+        function a_superJump () {
+          if (player_a.jumping2 === true)
+          {
+            player_a.body.velocity.y = -600;
+          }
+          else if (player_a.body.position.y < 200)
+          {
+            player_a.body.velocity.y = 0;
+        }
+        game.time.events.add(Phaser.Timer.SECOND * 1.2, stopSJump, this);
+        function stopSJump () {
+        player_a.jumping2 = false;
+        }
+        /*game.time.events.add(Phaser.Timer.SECOND * 3, a_end, this);
+        function a_end () {
+          player_a.body.velocity.x = 250;
+        }*/
+      }
+      //if (hit_ta_2 === true)
+      if (player_a.body.position.y < 200)
+      {
+        player_a.taing = true;
+      }
+      if (player_a.taing == true && hit_ta_0 == true)
+      {
+        player_a.body.position.x = aX_pos;
+        player_a.body.position.y = aY_pos;
+      }
+        /*player_a.jumping2 = false;
+        player_a.body.position.x = aX_pos;
+        player_a.body.position.y = aY_pos;
+        bean.create(420, game.world.height - 143 - 277 -50, 'brillo');
+        bean.create(520, game.world.height - 143 - 277 -50, 'brillo');
+        bean.create(620, game.world.height - 143 - 277 -50, 'brillo');
+        bean.createMultiple(30, 'light_sparkle');
+        bean.forEach(setupbean, this);
+
+        function setupbean (bean) {
+        bean.anchor.x = 0.5;
+        bean.anchor.y = 0;
+        bean.animations.add('light_sparkle');
+        bean.animations.play('light_sparkle', 15, true);
+        }
+        energy = game.add.group();
+        energy.createMultiple(30, 'energy_bean');
+        energy.forEach(setupBean, this);
+
+        function setupBean (bean) {
+        bean.anchor.x = 0.3;
+        bean.anchor.y = 0.3;
+        bean.animations.add('energy_bean');
+      }*/
+      }
+
+
+      if (goToTut.isDown)
+      {
+         this.game.state.start('Tutorial');
+      }
+      if (goToTut2.isDown)
+      {
+         this.game.state.start('Tutorial2');
+      }
+      if (goToLv1.isDown)
+      {
+          this.game.state.start('Game1');
+      }
+      if (goToLv2.isDown)
+      {
+          this.game.state.start('Game2');
+      }
+      if (goToLv3.isDown)
+      {
+          this.game.state.start('Game3');
+      }
+      if (goToCover.isDown)
+      {
+          this.game.state.start('Start');
+      }
+
+      },
+      collectbean: function (player, bean) {
+        bean.kill();
+
+        var Energy = energy.getFirstExists(false);
+        Energy.reset(bean.body.x, bean.body.y);
+        Energy.play('energy_bean', 30, false, true);
+
+        //  Add and update the score
+        score_Bean--;
+        if(score_Bean === 0){
+              superJump += -600;
+              score_Bean += 3;
+            }
+      },
+      collectbean_a: function (player_a, bean) {
+        bean.kill();
+
+        var Energy = energy.getFirstExists(false);
+        Energy.reset(bean.body.x, bean.body.y);
+        Energy.play('energy_bean', 30, false, true);
+        bean.destroy();
+        Energy.destroy();
+      },
+      freccia_nClick: function(pointer) {
+          this.game.state.start('Flashback');
+      },
+
+
+render: function() {
+      //game.debug.spriteCoords(player_a);
+      //game.debug.body(Beanstalk);
+      //game.debug.body(ta_2);
+      //game.debug.physicsGroup(tutorial_ground);
+  },
+}
+
+game.state.add('Tutorial2', Tutorial2State);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////// FLASHBACK
+
+var FlashbackState = {
+  preload: function() {
+      game.stage.backgroundColor = '#000000';
+      game.load.baseURL = 'http://examples.phaser.io/assets/';
+      game.load.crossOrigin = 'anonymous';
+      game.load.image('once_upon', 'http://127.0.0.1/img/once_upon.png')
+      game.load.image('flashback_1', 'http://127.0.0.1/img/flashback_1.png')
+      game.load.image('flashback_2', 'http://127.0.0.1/img/flashback_2.png');;
+      game.load.image('flashback_3', 'http://127.0.0.1/img/flashback_3.png');
+      game.load.image('flashback_4', 'http://127.0.0.1/img/flashback_4.png');
+      game.load.image('finalevero', 'http://127.0.0.1/img/finalevero.png');
+      game.load.image('prologo', 'http://127.0.0.1/img/prologo.png');
+      game.load.image('ten_years_later', 'http://127.0.0.1/img/ten_years_later.png');
+      game.load.image('prologo_2', 'http://127.0.0.1/img/prologo_2.png');
+      game.load.image('freccia', 'http://127.0.0.1/img/freccia.png');
+
+
+  },
+  create: function() {
+
+      game.world.setBounds(0, 0, 1024, 768);
+
+      flashback = game.add.physicsGroup();
+      flashback.enableBody = true;
+
+      f0 = flashback.create(game.world.centerX, game.world.centerY, 'once_upon');
+      f0.alpha = 0;
+      f0.anchor.x = 0.5;
+      f0.anchor.y = 0.5;
+      game.add.tween(f0).to( { alpha: 1 }, 3000, Phaser.Easing.Linear.None, true);
+      game.time.events.add(Phaser.Timer.SECOND * 6, fade0, this);
+      function fade0 () {
+        game.add.tween(f0).to( { alpha: 0 }, 3000, Phaser.Easing.Linear.None, true);
+      }
+
+      f1 = flashback.create(0, 0, 'flashback_1');
+      f1.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 10, fade1, this);
+      function fade1 () {
+        game.add.tween(f1).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f2 = flashback.create(0, 0, 'flashback_2');
+      f2.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 14, fade2, this);
+      function fade2 () {
+        game.add.tween(f2).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f3 = flashback.create(0, 0, 'flashback_3');
+      f3.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 18, fade3, this);
+      function fade3 () {
+        game.add.tween(f3).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f4 = flashback.create(0, 0, 'flashback_4');
+      f4.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 22, fade4, this);
+      function fade4 () {
+        game.add.tween(f4).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f5 = flashback.create(0, 0, 'finalevero');
+      f5.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 26, fade5, this);
+      function fade5 () {
+        game.add.tween(f5).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      game.time.events.add(Phaser.Timer.SECOND * 30, fade6, this);
+      function fade6 () {
+        game.add.tween(f5).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+        f1.alpha = 0;
+        f2.alpha = 0;
+        f3.alpha = 0;
+        f4.alpha = 0;
+      }
+      ten = flashback.create(game.world.centerX, game.world.centerY, 'ten_years_later');
+      ten.alpha = 0;
+      ten.anchor.x = 0.5;
+      ten.anchor.y = 0.5;
+      game.time.events.add(Phaser.Timer.SECOND * 34, fadeten, this);
+      function fadeten () {
+        game.add.tween(ten).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      game.time.events.add(Phaser.Timer.SECOND * 38, fadeten0, this);
+      function fadeten0 () {
+        game.add.tween(ten).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f6 = flashback.create(0, 0, 'prologo');
+      f6.alpha = 0;
+      game.time.events.add(Phaser.Timer.SECOND * 42, fade7, this);
+      function fade7 () {
+        game.add.tween(f6).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      game.time.events.add(Phaser.Timer.SECOND * 49, fade8, this);
+      function fade8 () {
+        game.add.tween(f6).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+      f7 = flashback.create(game.world.centerX, game.world.centerY, 'prologo_2');
+      f7.alpha = 0;
+      f7.anchor.x = 0.5;
+      f7.anchor.y = 0.5;
+      game.time.events.add(Phaser.Timer.SECOND * 50, fade9, this);
+      function fade9 () {
+        game.add.tween(f7).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+      }
+
+      game.time.events.add(Phaser.Timer.SECOND * 56, fade10, this);
+      function fade10 () {
+        this.game.state.start('Game1');
+      }
+
+      freccia = game.add.sprite(900, 690, 'freccia');
+      freccia.inputEnabled = true;
+      freccia.events.onInputDown.add(this.frecciaClick, this);
+
+
+
+
+
+
+
+      flashback.setAll('body.immovable', true);
+
+
+      cursors = game.input.keyboard.createCursorKeys();
+      jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+      pauseESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+
+      goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+      goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+      goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+      goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+      goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+      goToTut2 = game.input.keyboard.addKey(Phaser.Keyboard.Y);
+  },
+
+  frecciaClick: function(pointer) {
+      this.game.state.start('Game1');
+  },
+
+update: function() {
+
+
+      },
+
+
+render: function() {
+      //game.debug.spriteCoords(player_a);
+      //game.debug.body(Beanstalk);
+      //game.debug.body(ta_2);
+      //game.debug.physicsGroup(tutorial_ground);
+  },
+}
+
+game.state.add('Flashback', FlashbackState);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////// LEVEL 1
+jumpTime = 0;
+altezza = 2400;
+var score_menu = 0;
+var Game1State = {
+    preload: function() {
+
+          //game.stage.backgroundColor = '#5db04f'; //#85b5e1
+
+          game.load.baseURL = 'http://examples.phaser.io/assets/';
+          game.load.crossOrigin = 'anonymous';
+          game.load.image('pause_page', 'http://127.0.0.1/img/pause_page.png');
+          game.load.image('blocco', 'http://127.0.0.1/img/blocco.png');
+          game.load.image('resume', 'http://127.0.0.1/img/resume.png');
+          game.load.image('restart', 'http://127.0.0.1/img/restart.png');
+          game.load.image('controls', 'http://127.0.0.1/img/controls.png');
+          game.load.image('backhome', 'http://127.0.0.1/img/backhome.png');
+          game.load.image('cloud_1', 'http://127.0.0.1/img/cloud_1.png');
+          game.load.image('cloud_2', 'http://127.0.0.1/img/cloud_2.png');
+          game.load.image('cloud_3', 'http://127.0.0.1/img/cloud_3.png');
+          game.load.image('cloud_4', 'http://127.0.0.1/img/cloud_4.png');
+          game.load.image('cloud_5', 'http://127.0.0.1/img/cloud_5.png');
+          game.load.image('cloud_6', 'http://127.0.0.1/img/cloud_6.png');
+          game.load.image('cerchio-verde', 'http://127.0.0.1/img/cerchio-verde.png');
+          game.load.image('cerchio-azzurro', 'http://127.0.0.1/img/cerchio-azzurro.png');
+          game.load.image('pianta', 'http://127.0.0.1/img/pianta.png');
+          game.load.image('piantaS', 'http://127.0.0.1/img/piantaS.png');
+          game.load.image('sky', 'http://127.0.0.1/img/sky.png');
+          //game.load.image('pianta_2', 'http://localhost/img/pianta_2.png');
+          game.load.image('player', 'sprites/phaser-dude.png');
+          game.load.image('foglia_1', 'http://127.0.0.1/img/foglia_1.png');
+          game.load.image('foglia_1_inv', 'http://127.0.0.1/img/foglia_1_inv.png');
+          game.load.image('foglia_2', 'http://127.0.0.1/img/foglia_2.png');
+          game.load.image('foglia_2_inv', 'http://127.0.0.1/img/foglia_2_inv.png');
+          game.load.image('foglia_3', 'http://127.0.0.1/img/foglia_3.png');
+          game.load.image('foglia_3_inv', 'http://127.0.0.1/img/foglia_3_inv.png');
+          game.load.image('traliccio_1', 'http://127.0.0.1/img/traliccio_1.png');
+          game.load.image('traliccio_2', 'http://127.0.0.1/img/traliccio_2.png');
+          game.load.image('traliccio_2_v', 'http://127.0.0.1/img/traliccio_2_v.png');
+          game.load.image('platform', 'http://127.0.0.1/img/platform.png');
+          game.load.image('platform_b', 'http://127.0.0.1/img/platform_b.png');
+          game.load.image('platform_r', 'http://127.0.0.1/img/platform_r.png');
+          game.load.image('platform_rv', 'http://127.0.0.1/img/platform_rv.png');
+          game.load.image('platform_y', 'http://127.0.0.1/img/platform_y.png');
+          game.load.image('ground', 'sprites/platform.png');
+          game.load.image('rain', 'http://127.0.0.1/img/rain.png');
+          game.load.image('star', 'particlestorm/star.png');
+          //game.load.image('exitlight', 'bristoljs/yellow.png');
+          game.load.image('bean', 'http://127.0.0.1/img/white.png');
+          //game.load.spritesheet('rain', 'sprites/rain.png', 17, 17);
+          game.load.spritesheet('kaboom', 'sprites/explosion.png', 64, 64);
+          //game.load.spritesheet('energy_bean', 'http://localhost/img/acidgun_die.png', 100, 100);
+          game.load.spritesheet('energy_bean', 'http://127.0.0.1/img/heal_002.png', 192, 192);
+          game.load.spritesheet('rain_splash', 'http://127.0.0.1/img/sprite-splash.png', 20, 20);
+          //game.load.spritesheet('wind', 'http://localhost/img/wind_2.png', 50, 50);
+          game.load.spritesheet('wind', 'http://127.0.0.1/img/wind.png', 70, 70);
+          game.load.spritesheet('light_sparkle', 'http://127.0.0.1/img/light_sparkle.png', 60, 60);
+          game.load.spritesheet('brillo', 'http://127.0.0.1/img/brillo.png', 110, 110);
+          game.load.spritesheet('brillo_hud', 'http://127.0.0.1/img/brillo_hud.png', 103, 105);
+          game.load.spritesheet('heal', 'http://127.0.0.1/img/heal.png', 60, 60);
+          game.load.spritesheet('blood', 'http://127.0.0.1/img/blood.png', 100, 100);
+          game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
+          game.load.spritesheet('exitlight', 'http://127.0.0.1/img/cloud_light.png', 300, 300);
+},
+
+create: function() {
+
+         score_ground = 1
+         score_exitlight = 1;
+         score_platforms_death = 1;
+         score_menu = 0;
+
+          game.world.setBounds(0, 0, 1024, 2500); //per uscire da schermo
+          game.add.sprite(0, game.world.height - 2745, 'sky');
+          game.add.sprite(0, game.world.height - 2745, 'piantaS'); //2809
+
+          ////////////////////////////////////////////////////////// CLOUDS
+
+          clouds = game.add.physicsGroup();
+          clouds.create(-100, -30, 'cloud_1');
+          cloud_m1 = clouds.create(-150, 60, 'cloud_6');
+          clouds.create(500, -100, 'cloud_6');
+          clouds.create(300, -100, 'cloud_2');
+          clouds.create(90, -70, 'cloud_5');
+          clouds.create(300, 0, 'cloud_6');
+          clouds.create(600, -50, 'cloud_4');
+          clouds.create(500, 50, 'cloud_3');
+          clouds.create(730, 60, 'cloud_6');
+
+          clouds.children.forEach(function(cl){
+          cl.body.setSize(100, 100, 0, 0);
+        });
+
+          exitlight =game.add.sprite(game.world.width - 400, -100, 'exitlight');
+          //exitlight.scale.setTo(2,2);
+          game.physics.arcade.enable(exitlight);
+
+          exitlight.animations.add('exitlight');
+          exitlight.animations.play('exitlight', 10, true);
+
+          // GREEN PLATFORM SX
+          platforms = game.add.physicsGroup();
+          platforms.enableBody = true;
+
+          platforms.create(695, game.world.height - 100, 'foglia_1'); // 120x38
+          platforms.create(665, game.world.height - 200, 'foglia_1');
+          platforms.create(0, game.world.height - 270, 'foglia_1');
+          platforms.create(570, game.world.height - 420, 'foglia_1');
+          platforms.create(693, game.world.height - 1210, 'foglia_1');
+          platforms.create(650, game.world.height - 1570, 'foglia_1');
+          platforms.create(815, game.world.height - 1625, 'foglia_1');
+          platforms.create(15, game.world.height - 2170, 'foglia_1');
+          platforms.create(660, game.world.height - 2100, 'foglia_1');
+
+          platforms.children.forEach(function(leaf){
+          leaf.body.setSize(100, 5, 1, 8);
+          });
+
+          platforms.setAll('body.immovable', true);  // VA DOPO LE PIATTAFORME
+
+          platforms.falling = false;
+
+          /////// GREEN PLATFORM DX
+          platforms_dx = game.add.physicsGroup();
+          platforms_dx.enableBody = true;
+
+          platforms_dx.create(game.world.width - 120, game.world.height - 140, 'foglia_1_inv');
+          platforms_dx.create(210, game.world.height - 215, 'foglia_1_inv');
+          platforms_dx.create(290, game.world.height - 800, 'foglia_1_inv');
+          platforms_dx.create(240, game.world.height - 1800, 'foglia_1_inv');
+          platforms_dx.create(270, game.world.height - 2230, 'foglia_1_inv');
+
+
+          platforms_dx.children.forEach(function(leaf_dx){
+          leaf_dx.body.setSize(100, 5, 18, 8);
+          });
+
+          platforms_dx.setAll('body.immovable', true);
+
+          // VERTICAL PLATFORMS
+          vertical_platforms = game.add.physicsGroup();
+          vertical_platforms.enableBody = true;
+
+          vertical_platforms.create(100, game.world.height - 515, 'traliccio_1'); // 35x148
+          vertical_platforms.create(775, game.world.height - 660, 'traliccio_1');
+          vertical_platforms.create(90, game.world.height - 1105, 'traliccio_1');
+          vertical_platforms.create(60, game.world.height - 1550, 'traliccio_1');
+          vertical_platforms.create(670, game.world.height - 1840, 'traliccio_1');
+          vertical_platforms.create(119.5, game.world.height - 2000, 'traliccio_1');
+          flip_5 = vertical_platforms.create(137, game.world.height - 2070, 'traliccio_1');
+          flip_5.anchor.setTo(0.5,0.5);
+          flip_5.scale.y *= -1;
+
+          vertical_platforms.children.forEach(function(traliccio){
+          traliccio.body.setSize(10, 148, 12, 0);
+          });
+
+          blocco =game.add.sprite(100, game.world.height - 515, 'blocco');
+          game.physics.arcade.enable(blocco);
+          blocco.alpha = 0;
+
+
+          blocco.body.immovable = true;
+
+          vertical_platforms.setAll('body.immovable', true);
+
+          // VERTICAL PLATFORMS DX
+          vertical_platforms_dx = game.add.physicsGroup();
+          vertical_platforms_dx.enableBody = true;
+
+          vertical_platforms_dx.create(225, game.world.height - 470, 'traliccio_1');
+          flip_1 = vertical_platforms_dx.create(880, game.world.height - 505, 'traliccio_1');
+          flip_1.anchor.setTo(0.5,0.5);
+          // Invert scale.x to flip left/right
+          flip_1.scale.x *= -1;
+          vertical_platforms_dx.create(900, game.world.height - 730, 'traliccio_1');
+          vertical_platforms_dx.create(930, game.world.height - 1970, 'traliccio_1');
+          vertical_platforms_dx.create(237, game.world.height - 2090, 'traliccio_1');
+
+          vertical_platforms_dx.children.forEach(function(traliccio_dx){
+          traliccio_dx.body.setSize(10, 148, 12, 0);
+          });
+
+          vertical_platforms_dx.setAll('body.immovable', true);
+
+          // VERTICAL PLATFORMS BLOCK
+          vertical_platforms_block = game.add.physicsGroup();
+          vertical_platforms_block.enableBody = true;
+
+          vertical_platforms_block.create(237, game.world.height - 490, 'traliccio_2');
+          vertical_platforms_block.create(770, game.world.height - 410, 'traliccio_2');
+          flip_2 = vertical_platforms_block.create(720, game.world.height - 640, 'traliccio_2');
+          flip_2.anchor.setTo(0.5,0.5);
+          flip_2.scale.x *= -1;
+          flip_3 = vertical_platforms_block.create(180, game.world.height - 1135, 'traliccio_2');
+          flip_3.anchor.setTo(0.5,0.5);
+          flip_3.scale.y *= -1;
+          vertical_platforms_block.create(249, game.world.height - 2115, 'traliccio_2');
+
+          vertical_platforms_block.children.forEach(function(traliccio_block){
+          traliccio_block.body.setSize(100, 10, 0, 15);
+          });
+
+          flip_4 =game.add.sprite(94, game.world.height - 1690, 'traliccio_2_v');
+          game.physics.arcade.enable(flip_4);
+          flip_4.scale.x *= -1;
+          flip_4.body.setSize(10, 100, 12, 48);
+          flip_4.body.immovable = true;
+
+          vertical_platforms_block.setAll('body.immovable', true);
+
+          // RED PLATFORMS
+          platforms_red = game.add.physicsGroup();
+          platforms_red.enableBody = true;
+
+          platforms_red.create(65, game.world.height - 615, 'foglia_2'); // 120x29
+          platforms_red.create(660, game.world.height - 1030, 'foglia_2');
+          platforms_red.create(65, game.world.height - 1350, 'foglia_2');
+
+          platforms_red.setAll('body.immovable', true);
+
+          platforms_red.children.forEach(function(leaf_death){
+          leaf_death.body.setSize(70, 10, 22, 8);
+          });
+
+          // RED PLATFORMS DX
+          platforms_red_dx = game.add.physicsGroup();
+          platforms_red_dx.enableBody = true;
+
+          platforms_red_dx.create(885, game.world.height - 275, 'foglia_2_inv'); // 120x29
+          platforms_red_dx.create(900, game.world.height - 1270, 'foglia_2_inv');
+          platforms_red_dx.create(290, game.world.height - 1315, 'foglia_2_inv');
+          platforms_red_dx.create(820, game.world.height - 1770, 'foglia_2_inv');
+
+          platforms_red_dx.setAll('body.immovable', true);
+
+          platforms_red_dx.children.forEach(function(leaf_death_dx){
+          leaf_death_dx.body.setSize(70, 10, 22, 8);
+          });
+
+          // BLUE PLATFORM
+          //platformBounce = game.add.sprite(400, game.world.height - 120, 'platform');  // OGGETTO SINGOLO
+          //game.physics.arcade.enable(platformBounce);                                  // OGGETTO SINGOLO
+          //platformBounce.body.immovable= true;                                        // OGGETTO SINGOLO
+          platformBounce = game.add.physicsGroup();                           // PER GRUPPO
+          platformBounce.enableBody = true;                                  // PER GRUPPO
+
+          platformBounce.create(540, game.world.height - 245, 'foglia_3');  //120x34
+          platformBounce.create(100, game.world.height - 850, 'foglia_3');
+          platformBounce.create(650, game.world.height - 1900, 'foglia_3');
+
+          platformBounce.children.forEach(function(blueleaf){
+          blueleaf.body.setSize(100, 2, 5, 14);
+          });
+
+          platformBounce.setAll('body.immovable', true);
+
+          //platformBounce.anchor.setTo(0); //per ruotare rispetto al centro
+          //platformBounce.scale.setTo(0.2,0.5);
+          //platformBounce.angle = -45;
+
+          // PLAFTFOTM BOUNCE DX
+          platformBounce_dx = game.add.physicsGroup();
+          platformBounce_dx.enableBody = true;
+          platformBounce_dx.setAll('body.immovable', true);
+
+          platformBounce_dx.create(280, game.world.height - 1020, 'foglia_3_inv'); //120x34
+          platformBounce_dx.create(900, game.world.height - 1030, 'foglia_3_inv');
+          platformBounce_dx.create(248, game.world.height - 1504, 'foglia_3_inv');
+
+          platformBounce_dx.children.forEach(function(blueleaf_dx){
+          blueleaf_dx.body.setSize(100, 2, 12.5, 14);
+          });
+
+          platformBounce_dx.setAll('body.immovable', true);
+          checkpoint_posX1 = 0;
+          checkpoint_posY1 = game.world.height - 91;
+          player = game.add.sprite(checkpoint_posX1, checkpoint_posY1, 'jack');   //27x40
+
+          game.physics.arcade.enable(player);
+
+          player.animations.add('right', [6, 7, 8], 10, true);
+          player.animations.add('left', [2, 1, 0], 10, true);
+
+          player.body.collideWorldBounds = true;
+          player.body.gravity.y = 600; //500
+
+          checkpoint_posX = 725;
+          checkpoint_posY = 1246;
+
+          /*shadow = game.add.sprite(0, game.world.height - 290, 'player');
+          shadow.anchor.set(0.5);
+          shadow.tint = 0x000000;
+          shadow.alpha = 0.6;
+          //game.input.addMoveCallback(move, this);*/
+
+          explosions = game.add.group();
+          explosions.createMultiple(30, 'blood');
+          explosions.forEach(setupInvader, this);
+
+          function setupInvader (player) {
+
+          player.anchor.x = 0.5;
+          player.anchor.y = 0.5;
+          player.animations.add('blood');
+          }
+
+          game.camera.follow(player); // camera segue omino
+
+          ground = game.add.sprite(0, game.world.height - 32, 'ground');
+          //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+          ground.scale.setTo(1000, 1);
+          ground.anchor.x = 0.5;
+          ground.alpha = 0;
+          game.physics.arcade.enable(ground);
+          ground.body.immovable= true;
+
+          ground.killing = false;
+
+          ground_v = game.add.sprite(-500, 0, 'ground');
+          //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+          ground_v.scale.setTo(1, 200);
+          //ground.anchor.x = 0.5;
+          game.physics.arcade.enable(ground_v);
+          ground_v.body.immovable= true;
+
+          // BEANS 128x128
+
+          bean = game.add.physicsGroup();
+          bean.enableBody = true;
+
+          //bean.body.setCircle(45);
+
+          b = bean.create(525, game.world.height - 100 -30, 'brillo'); //440x440
+          b.spawn = b.y;
+          b = bean.create(43, game.world.height - 400 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(500, game.world.height - 590 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(955, game.world.height - 1120 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(140, game.world.height - 1250 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(955, game.world.height - 1350 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(480, game.world.height - 1700 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(300, game.world.height - 1880 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(700, game.world.height - 2180 -30, 'brillo');
+          b.spawn = b.y;
+
+          bean.children.forEach(function(beanbody){
+          beanbody.body.setSize(60, 60, 25, 25);
+          });
+
+          bean.setAll('body.immovable', true);  // VA DOPO LE PIATTAFORME
+
+          // BEAN animations
+
+          bean.createMultiple(30, 'brillo');
+          bean.forEach(setupbean, this);
+
+          function setupbean (bean) {
+          bean.anchor.x = 0.5;
+          bean.anchor.y = 0;
+          bean.animations.add('brillo');
+          bean.animations.play('brillo', 15, true);
+          }
+          energy = game.add.group();
+          energy.createMultiple(30, 'energy_bean');
+          energy.forEach(setupBean, this);
+
+          function setupBean (bean) {
+          bean.anchor.x = 0.3;
+          bean.anchor.y = 0.3;
+          bean.animations.add('energy_bean');
+         }
+
+         // RAIN
+         rain = game.add.group();
+         rain.enableBody = true;
+
+         // RAIN SPLASH
+         rain_splash = game.add.group();
+         rain_splash.createMultiple(30, 'rain_splash');
+         rain_splash.forEach(setupRain, this);
+
+         function setupRain (rain) {
+         rain.anchor.x = 0.5;
+         rain.anchor.y = 0;
+         rain.animations.add('rain_splash');
+        }
+
+         // WIND
+
+         wind = game.add.sprite(1024, game.world.height -1700, 'wind');
+         game.physics.arcade.enable(wind);
+
+         wind.body.collideWorldBounds = true;
+         wind.body.gravity.y = 0;
+
+         wind.animations.add('windplay');
+         wind.animations.play('windplay', 15, true);
+
+         wind_2 = game.add.sprite(30, game.world.height -1870, 'wind'); //70x70
+         game.physics.arcade.enable(wind_2);
+
+         wind_2.body.collideWorldBounds = true;
+         wind_2.body.gravity.y = 0;
+
+         wind_2.animations.add('windplay');
+         wind_2.animations.play('windplay', 15, true);
+
+         wind_3 = game.add.sprite(170, game.world.height -2285, 'wind'); //70x70
+         game.physics.arcade.enable(wind_3);
+
+         //wind_3.body.setSize(10, 100, 12, 48);
+
+         wind_3.body.collideWorldBounds = true;
+         wind_3.body.gravity.y = 0;
+
+         wind_3.animations.add('windplay');
+         wind_3.animations.play('windplay', 15, true);
+
+         //wind = game.add.group();
+         //wind.enableBody = true;
+
+         //  Here we add a new animation called 'walk'
+         //  Because we didn't give any other parameters it's going to make an animation from all available frames in the 'mummy' sprite sheet
+         //var windplay = wind.animations.add('windplay');
+         //  And this starts the animation playing by using its key ("walk")
+         //  30 is the frame rate (30fps)
+         //  true means it will loop when it finishes
+         //  wind.animations.play('windplay', 30, true);
+        //}
+
+         // PIOGGIA GLOBALE
+         /*var emitter = game.add.emitter(game.world.centerX, 0, 400); //400 di base
+
+        	emitter.width = game.world.width + 3000;
+          emitter.angle = 30; // uncomment to set an angle for the rain.
+
+         	emitter.makeParticles('rain');
+
+        	emitter.minParticleScale = 0.1;
+         	emitter.maxParticleScale = 0.8;
+
+         	emitter.setYSpeed(300, 500);
+        	emitter.setXSpeed(-5, 5);
+
+        	emitter.minRotation = 0;
+        	emitter.maxRotation = 0;
+
+	        emitter.start(false, 4000, 5, 0);  //1600 di base*/
+
+          ////////////////////////////////////////////////// HUD
+
+          bean_border = game.add.graphics(20 , 32);
+
+          bean_border.lineStyle(3, 0xffffff, 1);//1d6208
+          bean_border.drawRect(0, 0, 250/1.3, 15/1.3);
+          bean_border.fixedToCamera = true;
+
+          bean_border_2 = game.add.graphics(20 , 32);
+
+          bean_border_2.lineStyle(3, 0xffffff, 1);
+          bean_border_2.drawRect(0, 0, 83/1.3, 15/1.3);
+          bean_border_2.fixedToCamera = true;
+
+          bean_border_3 = game.add.graphics(20 , 32);
+
+          bean_border_3.lineStyle(3, 0xffffff, 1);
+          bean_border_3.drawRect(0, 0, 166/1.3, 15/1.3);
+          bean_border_3.fixedToCamera = true;
+
+          cerchio_verde_1 = game.add.sprite(318.7 -30 -20 -57 , 16, 'cerchio-verde');
+          cerchio_verde_1.fixedToCamera = true;
+
+          fagiolo_1 = game.add.sprite((280 -30 -20 + 8)/1.3 -2, -7 - 12 + 5, 'brillo_hud');
+          fagiolo_1.fixedToCamera = true;
+          fagiolo_1.animations.add('active', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15, true);
+          fagiolo_1.animations.add('fixed', [16], 15, true);
+
+          ///////////////////////////////////////////////// PAUSE
+          player.pausing = false;
+
+          pause_page = game.add.sprite(0, 0, 'pause_page');
+          pause_page.fixedToCamera = true;
+          pause_page.alpha = 0;
+          /*pause_page.events.onInputDown.add(this.imageClick, this);
+          function imageClick (pointer) {
+              this.game.state.start('Start');
+          }*/
+          pause_commands = game.add.physicsGroup();
+
+          /*resume = pause_commands.create(280, 158, 'resume');
+          resume.fixedToCamera = true;
+          resume.alpha = 0;*/
+          restart = pause_commands.create(280, 158, 'restart');
+          restart.fixedToCamera = true;
+          restart.alpha = 0;
+          controls = pause_commands.create(280, 258, 'controls');
+          controls.fixedToCamera = true;
+          controls.alpha = 0;
+          backhome = pause_commands.create(280, 358, 'backhome');
+          backhome.fixedToCamera = true;
+          backhome.alpha = 0;
+
+
+          window.onkeydown = function(event) {
+
+            if (event.keyCode == 80)
+            {
+              game.paused = !game.paused;
+
+              if(game.paused)
+              {
+                pause_page.alpha = 1;
+                game.physics.arcade.enable(pause_page);
+                pause_page.inputEnabled = true;
+
+              }
+              if(!game.paused)
+              {
+                 pause_page.alpha = 0;
+              }
+
+              //controls.events.onInputDown.add(this.imageClick, this);
+            }
+          }
+
+          player.redfalling = false;
+
+          cursors = game.input.keyboard.createCursorKeys();
+          menu = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+          jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+          superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+          goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+          goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+          goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+          goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+          goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+          fly = game.input.keyboard.addKey(Phaser.Keyboard.A);
+
+
+          },
+
+
+
+update: function() {
+          //platformBounce.angle += 0.5;   // PER RUOTARE NEL TEMPO
+
+          if (menu.isDown)
+          {
+            pause_page.alpha = 0.8;
+            pause_page.inputEnabled = true;
+            pause_page.events.onInputDown.add(this.imageClick, this);
+
+            restart.alpha = 1;
+            restart.inputEnabled = true;
+            restart.events.onInputDown.add(this.restartClick, this);
+            controls.alpha = 1;
+            controls.inputEnabled = true;
+            controls.events.onInputDown.add(this.controlsClick, this);
+            backhome.alpha = 1;
+            backhome.inputEnabled = true;
+            backhome.events.onInputDown.add(this.backhomeClick, this);
+          }
+          else
+          {
+            pause_page.alpha = 0;
+
+            restart.alpha = 0;
+            controls.alpha = 0;
+            backhome.alpha = 0;
+          }
+
+
+
+
+
+
+
+          if (cloud_m1.body.position.x < -180)
+          {
+            cloud_m1.body.velocity.x = 40;
+          }
+          else if (cloud_m1.body.position.x > -60)
+          {
+            cloud_m1.body.velocity.x = -40;
+          }
+
+
+
+
+
+          //game.physics.arcade.collide(player, platforms);
+          //  Collide the player and the stars with the platforms
+          var hitPlatform = game.physics.arcade.collide(player, platforms, this.PlatformGreenFall, null, this);
+          var hitPlatform_dx = game.physics.arcade.collide(player, platforms_dx);
+          var hitPlatformRed = game.physics.arcade.collide(player, platforms_red, this.PlatformRedFall, null, this);
+          var hitPlatformRedDX = game.physics.arcade.collide(player, platforms_red_dx, this.PlatformRedFall, null, this);
+          var hitVerticalPlatform = game.physics.arcade.collide(player, vertical_platforms);
+          var hitVerticalPlatformDX = game.physics.arcade.collide(player, vertical_platforms_dx);
+          game.physics.arcade.collide(player, vertical_platforms_block);
+          var hitblocco = game.physics.arcade.collide(player, blocco);
+          var hitFlip_4 = game.physics.arcade.collide(player, flip_4);
+
+          //game.physics.arcade.collide(stars, platforms);
+
+          /*game.physics.arcade.overlap(player, stars, this.collectStar, null, this);
+          game.physics.arcade.overlap(platforms, stars, this.rainPlatform, null, this);*/ //gocce scompaiono al contatto con piattaforme
+          //game.physics.arcade.overlap(player, rain, this.collectrain, null, this);
+          //game.physics.arcade.collide(platforms, rain, this.rainPlatform, null, this);
+          //game.physics.arcade.collide(platforms_dx, rain, this.rainPlatform, null, this);
+          game.physics.arcade.overlap(player, wind, this.hitwind, null, this);
+          game.physics.arcade.overlap(player, wind_2, this.hitwind, null, this);
+          game.physics.arcade.overlap(player, wind_3, this.hitwind, null, this);
+          /*game.physics.arcade.collide(platforms_red, rain, this.rainPlatforms_death, null, this);
+          game.physics.arcade.collide(platforms_red_dx, rain, this.rainPlatforms_death, null, this);
+          game.physics.arcade.overlap(vertical_platforms, rain, this.rainVertical_platforms, null, this);
+          game.physics.arcade.overlap(vertical_platforms_dx, rain, this.rainVertical_platforms, null, this);
+          game.physics.arcade.overlap(vertical_platforms_block, rain, this.rainVertical_platforms, null, this);
+
+          game.physics.arcade.collide(platformBounce, rain, this.rainPlatformBounce, null, this);
+          game.physics.arcade.collide(platformBounce_dx, rain, this.rainPlatformBounce, null, this);*/
+          game.physics.arcade.overlap(ground, rain, this.rainGround, null, this);
+          game.physics.arcade.overlap(ground_v, rain, this.rainGround_v, null, this);
+          game.physics.arcade.overlap(player, exitlight, this.collect_exitlight, null, this);
+          game.physics.arcade.overlap(player, bean, this.collectbean, null, this);
+          game.physics.arcade.collide(player, ground, this.death_2, null, this);
+
+
+          var hitPlatformBounce = game.physics.arcade.collide(player, platformBounce);
+          var hitPlatformBounce_dx = game.physics.arcade.collide(player, platformBounce_dx);
+
+          //player.body.velocity.x = player.body.velocity.x*0.9; // ATTRITO
+          player.body.velocity.x = 0;
+
+          /*if (fly.isDown)
+          {
+            player.body.velocity.y = -300;
+          }*/
+
+          if (player.body.position.y < game.world.height - 600)
+          {
+            ground.killing = true;
+          }
+
+          if (cursors.left.isDown)
+          {
+              player.body.velocity.x = -250;
+              player.animations.play('left');
+          }
+          else if (cursors.right.isDown)
+          {
+              player.body.velocity.x = 250;
+              player.animations.play('right');
+          }
+          else
+          {
+               player.animations.stop();
+               player.frame = 4;
+          }
+          if (jumpButton.isDown && player.body.velocity.y==0 && (player.body.onFloor() || player.body.touching.down)) //&& (game.time.now-jumpTime>100)
+          {
+              player.body.velocity.y = -300;
+          }
+          if(jumpButton.isDown)
+            //jumpTime = game.time.now
+          /*if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down || hitVerticalPlatform))
+          {
+              player.body.velocity.y = -300;
+          }*/
+          if (jumpButton.isDown && hitVerticalPlatform && cursors.right.isDown)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && hitblocco && cursors.left.isDown)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && hitVerticalPlatformDX && cursors.left.isDown)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && hitFlip_4 && cursors.right.isDown)
+          {
+              player.body.velocity.y = -300;
+          }
+          /*if (hitinvs && cursors.left.isDown)
+          {
+              player.body.gravity.y = 0;
+          }
+          else if (hitinvs == false)
+          {
+              player.body.gravity.y = 600;
+          }*/
+          if (hitPlatformBounce && player.body.touching.down)
+          {
+              //player.body.velocity.x = -600;
+              player.body.velocity.y = -430;
+          }
+          if (hitPlatformBounce_dx && player.body.touching.down)
+          {
+              //player.body.velocity.x = -600;
+              player.body.velocity.y = -500;
+          }
+          if (superJumpButton.isDown && player.body.touching.down)
+          {
+            if(score_Bean === 0){
+                  superJump += -600;
+                  score_Bean += 3;
+                  bbar1.destroy();
+                  bbar2.destroy();
+                  bbar3.destroy();
+                }
+                if(score_Bean < 0){
+                      score_Bean += 1;
+                    }
+              player.body.velocity.y = superJump;
+              superJump = 0;
+          }
+          //////////////////////////////////////////// °
+          if(player.body.touching.down) {
+            if(player.y-altezza>250)
+            {
+              //player.alting = true;
+              console.log("morto")
+              console.log(player.y-altezza)
+              this.game.state.start('Bad');
+
+              /*player.body.position.x = checkpoint_posX1;
+              player.body.position.y = checkpoint_posY1;
+              console.log(checkpoint_posX1)
+              //bean.y=bean.spawn
+              score_Bean = 3;
+
+              bbar1.destroy();
+              bbar2.destroy();
+              bbar3.destroy();*/
+
+
+
+            }
+            altezza = player.y
+          }
+
+          /*platforms.children.forEach(function(platf){
+            if (player.body.position.y < platf.body.position.y - 600)
+            {
+              platforms.falling = true;
+            }
+          });*/
+
+          if(score_Bean <= 0)
+          {
+          fagiolo_1.animations.play('active');
+          }
+          else
+          {
+            fagiolo_1.animations.play('fixed');
+          }
+
+          if (goToTut.isDown)
+          {
+              this.game.state.start('Tutorial');
+          }
+          if (goToLv1.isDown)
+          {
+              this.game.state.start('Game1');
+          }
+          if (goToLv2.isDown)
+          {
+              this.game.state.start('Game2');
+          }
+          if (goToLv3.isDown)
+          {
+              this.game.state.start('Game3');
+          }
+          if (goToCover.isDown)
+          {
+              this.game.state.start('Start');
+          }
+          ////////////// PLATFORM RED FALL
+
+          /*if (hitPlatformRed && player.body.touching.down)
+          {
+            game.time.events.add(Phaser.Timer.SECOND * 0.1, leafFall, this);
+            function leafFall () {
+              platforms_red.children.forEach(function(redleaf){
+              redleaf.body.immovable= false;
+              redleaf.body.gravity.y = 1000;
+
+              });
+            }
+          }
+          else if (hitPlatformRed == false && player.body.touching.down)
+          {
+            game.time.events.add(Phaser.Timer.SECOND * 0.1, leafnotFall, this);
+            function leafnotFall () {
+            platforms_red.children.forEach(function(redleaf){
+            redleaf.body.immovable= true;
+          });
+          }
+        }*/
+          if(Math.random()<0.7) {  //<0.015
+            var Rain = rain.create(1500*Math.random(), 0, 'rain');
+            Rain.body.gravity.y = 100;  //60*Math.random()
+            Rain.angle = 15;
+            Rain.body.velocity.x = -100;  //100*(Math.random()-0.5)
+            //Rain.body.bounce.y = 0.7 + Math.random() * 0.2;
+            //Rain.scale.setTo(1*Math.random(), 1*Math.random());
+          }
+          if(wind.body.position.x < 760)               // WIND PATROLLING
+              wind.body.velocity.x = 100;
+          if(wind.body.position.x > 950)
+              wind.body.velocity.x = -100;
+
+              if(wind_2.body.position.x < 31)               // WIND 2 PATROLLING
+                  wind_2.body.velocity.x = 100;
+              if(wind_2.body.position.x > 385)
+                  wind_2.body.velocity.x = -100;
+
+                  if(wind_3.body.position.x < 200)               // WIND 3 PATROLLING
+                      wind_3.body.velocity.x = 100;
+                  if(wind_3.body.position.x > 520)
+                      wind_3.body.velocity.x = -100;
+          },
+
+          PlatformRedFall: function (player, platforms_red) {
+
+            //game.time.events.add(Phaser.Timer.SECOND * 0.05, leafFall, this);
+            //function leafFall () {
+              if (player.body.touching.down)
+              {
+              player.redfalling = true;
+              if (player.redfalling == true)
+              {
+                platforms_red.body.immovable = false;
+                platforms_red.body.gravity.y = 1000;
+              }
+
+              }
+              //game.time.events.add(2000,function f(){console.log("ora");player.redfalling = false})
+              //}
+          },
+          PlatformGreenFall: function (player, platformsf) {
+
+
+          },
+          collectbean: function (player, bean) {
+          bean.y = -10000;
+
+
+            game.time.events.add(5000,function f(){console.log("ora"); bean.y=bean.spawn})
+
+
+
+          var Energy = energy.getFirstExists(false);
+          Energy.reset(bean.body.x, bean.body.y);
+          Energy.play('energy_bean', 30, false, true);
+              score_Bean--;
+              if(score_Bean === 2)
+              {
+                bean_bar_1 = game.add.graphics(71 -30 -20, 51 -18.3); //ç
+                bean_bar_1.fixedToCamera = true;
+                bean_bar_1.beginFill(0x9bf380, 1);
+                bbar1 = bean_bar_1.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+                bean_bar_1.endFill();
+                }
+                if(score_Bean === 1)
+                {
+                bean_bar_2 = game.add.graphics(154 -30 -20 -19, 51 -18.3);
+                bean_bar_2.fixedToCamera = true;
+                bean_bar_2.beginFill(0x9bf380, 1);
+                bbar2 = bean_bar_2.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+                bean_bar_2.endFill();
+                }
+                if(score_Bean === 0)
+                {
+                bean_bar_3 = game.add.graphics(237 -30 -20 -38, 51 -18.3);
+                bean_bar_3.fixedToCamera = true;
+                bean_bar_3.beginFill(0x9bf380, 1);
+                bbar3 = bean_bar_3.drawRect(1, 1, 81/1.3, 12/1.3); //247x13
+                bean_bar_3.endFill();
+                }
+
+          },
+          /*death_2: function (player, ground) {
+              if (ground.killing == true)
+              {
+                player.kill();
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(player.body.x, player.body.y);
+                explosion.play('blood', 30, false, true);
+
+                game.time.events.add(Phaser.Timer.SECOND * 1, badStateOn1, this);
+                function badStateOn1 () {
+                  this.game.state.start('Bad');
+                }
+              }
+          },*/
+          // EXITLIGHT per passare al prossimo livello
+          collect_exitlight: function (player, exitlight) {
+
+             score_exitlight--;
+             if(score_exitlight === 0)
+                this.game.state.start('Good');
+          },
+          hitwind: function (player, wind) {
+             player.body.position.x = wind.body.position.x;
+          },
+          /*collectrain: function (player, rain) {
+             rain.kill();
+
+             /*var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);*
+
+             /*scoreCandies--;
+             scoreCandiesText.text = 'Remaining candies: ' + scoreCandies;
+             jump -= 50;
+             if(scoreCandies === 0)
+             this.game.state.start('Bad');*/
+            /* rain.destroy();
+          },*/
+          /*rainPlatform: function (platforms, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             //Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+          },
+          rainPlatform_dx: function (platforms_dx, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+          },
+          rainPlatforms_death: function (platforms_red, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+          },
+          rainVertical_platforms: function (vertical_platforms, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+          },*/
+          rainGround: function (ground, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+          },
+          rainGround_v: function (ground_v, rain) {
+
+             rain.destroy();
+          },
+          /*rainPlatformBounce: function (platformBounce, rain) {
+             rain.kill();
+
+             var Rain_splash = rain_splash.getFirstExists(false);
+             Rain_splash.reset(rain.body.x, rain.body.y);
+             Rain_splash.play('rain_splash', 30, false, true);
+
+             rain.destroy();
+         },*/
+         imageClick: function(pointer) {
+             this.game.state.start('Start');
+         },
+         restartClick: function(pointer) {
+             this.game.state.start('Game1');
+         },
+         controlsClick: function(pointer) {
+             this.game.state.start('Controls');
+         },
+         backhomeClick: function(pointer) {
+             this.game.state.start('Start');
+         },
+render: function() {
+
+         //game.debug.cameraInfo(game.camera, 500, 32); //dati posizione ecc.
+         //game.debug.spriteCoords(player, 32, 32);
+         //game.debug.body(player);
+         //game.debug.body(wind_3);
+         //game.debug.physicsGroup(platforms);
+         //game.debug.physicsGroup(platforms_dx);
+         //game.debug.physicsGroup(platforms_red);
+         //game.debug.physicsGroup(platformBounce);
+         //game.debug.physicsGroup(platformBounce_dx);
+         //game.debug.physicsGroup(vertical_platforms);
+         //game.debug.physicsGroup(vertical_platforms_dx);
+         //game.debug.physicsGroup(vertical_platforms_block);
+         //game.debug.physicsGroup(bean);
+         //game.debug.body(flip_4);
+         //game.debug.physicsGroup(clouds);
+         //game.debug.body(blocco);
+}
+
+}  //Gamestate1
+
+game.state.add('Game1', Game1State);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////// LEVEL 2
+var Game2State = {
+    preload: function() {
+
+          game.stage.backgroundColor = '#a0a2a0'; //#85b5e1
+
+          game.load.baseURL = 'http://examples.phaser.io/assets/';
+          game.load.crossOrigin = 'anonymous';
+          game.load.image('cloud_6', 'http://127.0.0.1/img/cloud_6.png');
+          game.load.image('copri', 'http://127.0.0.1/img/copri.png');
+          game.load.image('pause_page', 'http://127.0.0.1/img/pause_page.png');
+          game.load.image('resume', 'http://127.0.0.1/img/resume.png');
+          game.load.image('restart', 'http://127.0.0.1/img/restart.png');
+          game.load.image('controls', 'http://127.0.0.1/img/controls.png');
+          game.load.image('pause_page', 'http://127.0.0.1/img/pause_page.png');
+          game.load.image('cerchio-verde', 'http://127.0.0.1/img/cerchio-verde.png');
+          game.load.image('cerchio-azzurro', 'http://127.0.0.1/img/cerchio-azzurro.png');
+          game.load.image('cerchio-azzurro', 'http://127.0.0.1/img/cerchio-azzurro.png');
+          game.load.image('fagiolo', 'http://127.0.0.1/img/fagiolo.png');
+          game.load.image('LV2_a', 'http://127.0.0.1/img/LV2_a.png');
+          //game.load.image('LV2_aa', 'http://127.0.0.1/img/LV2_aa.png');
+          game.load.image('entrance_stairs', 'http://127.0.0.1/img/entrance_stairs.jpg');
+          game.load.image('door', 'http://127.0.0.1/img/door.jpg');
+          game.load.image('door_d', 'http://127.0.0.1/img/door_d.jpg');
+          game.load.image('door_d_block', 'http://127.0.0.1/img/door_d_block.jpg');
+          game.load.image('door_u', 'http://127.0.0.1/img/door_u.jpg');
+          game.load.image('door_c', 'http://127.0.0.1/img/door_c.jpg');
+          game.load.image('shoe_rack', 'http://127.0.0.1/img/shoe_rack.jpg');
+          game.load.image('shoe_rack_2', 'http://127.0.0.1/img/shoe_rack_2.jpg');
+          game.load.image('shoe_rack_v', 'http://127.0.0.1/img/shoe_rack_v.jpg');
+          game.load.image('shoe_rack_v2', 'http://127.0.0.1/img/shoe_rack_v2.jpg');
+          game.load.image('trash', 'http://127.0.0.1/img/trash.jpg');
+          game.load.image('chair_legSX', 'http://127.0.0.1/img/chair_legSX.jpg');
+          game.load.image('chair_seat', 'http://127.0.0.1/img/chair_seat.jpg');
+          game.load.image('chair_SED_SX', 'http://127.0.0.1/img/chair_SED_SX.jpg');
+          game.load.image('chair_SED_DX', 'http://127.0.0.1/img/chair_SED_DX.jpg');
+          game.load.image('pillow', 'http://127.0.0.1/img/pillow.png');
+          game.load.image('table_leg', 'http://127.0.0.1/img/table_leg.jpg');
+          game.load.image('table_plane', 'http://127.0.0.1/img/table_plane.jpg');
+          game.load.image('pot', 'http://127.0.0.1/img/pot.jpg');
+          game.load.image('pot_front', 'http://127.0.0.1/img/pot_front.jpg');
+          game.load.image('pentola', 'http://127.0.0.1/img/pentola.png');
+          game.load.image('table_object', 'http://127.0.0.1/img/table_object.png');
+          game.load.image('cups', 'http://127.0.0.1/img/cups.jpg');
+          game.load.image('knife', 'http://127.0.0.1/img/knife.png');
+          game.load.image('knife_base', 'http://127.0.0.1/img/knife_base.jpg');
+          game.load.image('knife_death', 'http://127.0.0.1/img/knife_death.png');
+          game.load.image('final_step', 'http://127.0.0.1/img/final_step.jpg');
+          game.load.image('egg_shelf', 'http://127.0.0.1/img/egg_shelf.jpg');
+          game.load.image('egg_shelf_small', 'http://127.0.0.1/img/egg_shelf_small.jpg');
+          game.load.image('water_1', 'http://127.0.0.1/img/water_1.jpg');
+          game.load.image('water_1a', 'http://127.0.0.1/img/water_1a.jpg');
+          game.load.image('water_3', 'http://127.0.0.1/img/water_3.jpg');
+          game.load.image('water_4', 'http://127.0.0.1/img/water_4.jpg');
+          game.load.image('bathroom_door', 'http://127.0.0.1/img/bathroom_door.jpg');
+          game.load.image('ground_2', 'http://127.0.0.1/img/ground_2.jpg');
+          game.load.image('sky_2', 'http://127.0.0.1/img/sky_2.jpg');
+          game.load.image('cloud', 'particlestorm/cloud.png');
+          /*game.load.image('object_0', 'http://localhost/img/object_0.jpg');
+          game.load.image('object_1', 'http://localhost/img/object_1.jpg');
+          game.load.image('object_2', 'http://localhost/img/object_2.jpg');
+          game.load.image('object_3', 'http://localhost/img/object_3.jpg');
+          game.load.image('platform', 'http://localhost/img/platform.png');
+          game.load.image('platform_b', 'http://localhost/img/platform_b.png');*/
+          game.load.image('player', 'sprites/phaser-dude.png');
+          game.load.image('exitlight', 'bristoljs/yellow.png');
+          game.load.image('bean', 'http://127.0.0.1/img/white.png');
+          game.load.image('spider_web', 'http://127.0.0.1/img/spider_web.png');
+          //game.load.image('bullet', 'http://localhost/img/bullet.jpg');
+          //game.load.image('punch', 'http://localhost/img/bullet.jpg');
+          /*game.load.image('ant_sx', 'http://localhost/img/ant_sx.png');
+          game.load.image('water', 'http://localhost/img/water.jpg');*/
+          game.load.spritesheet('kaboom', 'sprites/explosion.png', 64, 64);
+          //game.load.spritesheet('energy_bean', 'http://localhost/img/acidgun_die.png', 100, 100);
+          game.load.spritesheet('energy_bean', 'http://127.0.0.1/img/heal_002.png', 192, 192);
+          game.load.spritesheet('light_sparkle', 'http://127.0.0.1/img/light_sparkle.png', 60, 60);
+          game.load.spritesheet('brillo', 'http://127.0.0.1/img/brillo.png', 110, 110);
+          game.load.spritesheet('brillo_hud', 'http://127.0.0.1/img/brillo_hud.png', 103, 105);
+          game.load.spritesheet('mouse', 'http://127.0.0.1/img/mouse.png', 193, 52);
+          game.load.spritesheet('TOPO', 'http://127.0.0.1/img/TOPO.png', 188, 52);
+          game.load.spritesheet('blood', 'http://127.0.0.1/img/blood.png', 100, 100);
+          game.load.spritesheet('jack', 'http://127.0.0.1/img/jack.png', 35.2, 59);
+          game.load.spritesheet('schizzo', 'http://127.0.0.1/img/schizzo.png', 44, 38.3);
+          //game.load.spritesheet('dude_spritesheet', 'http://localhost/img/dude_spritesheet.png', 32, 48);
+
+},
+
+create: function() {
+
+         score_ground = 1
+         score_exitlight = 1;
+         score_platforms_death = 1;
+         score_Bean = 3;
+         superJump = 0;
+         score_pauseESC = 1;
+         //time_weapon = 1;
+
+          game.world.setBounds(0, 0, 5300 + 384, 1000); //per uscire da schermo
+
+          //  Creates 30 bullets, using the 'bullet' graphic
+          /*weapon = game.add.weapon(1, 'bullet');
+          //game.physics.arcade.enable(weapon);
+          weapon.enableBody = true;
+
+          //  The bullet will be automatically killed when it leaves the world bounds
+          weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+          //weapon.bounds = new Phaser.Rectangle(-200, -200, 600, 600);
+
+          //  The speed at which the bullet is fired
+          weapon.bulletSpeed = 500;
+
+          //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
+          weapon.fireRate = 100;*/
+
+          //  Tell the Weapon to track the 'player' Sprite
+          //  With no offsets from the position
+          //  But the 'true' argument tells the weapon to track sprite rotation
+
+          // SKY
+
+          sky_2 = game.add.sprite(0, game.world.height - 930, 'sky_2');  //930x2000
+          game.physics.arcade.enable(sky_2);
+          sky_2.body.immovable= true;
+
+          // DOOR  70x1000
+
+          door = game.add.sprite(930, game.world.height - 1140, 'door');
+          door_d = game.add.sprite(925, game.world.height - 340, 'door_d');
+          game.physics.arcade.enable(door_d);
+          door_d.body.immovable= true;
+          door_d_block = game.add.sprite(935, game.world.height - 340, 'door_d_block');
+          game.physics.arcade.enable(door_d_block);
+          door_d_block.body.immovable= true;
+          door_u = game.add.sprite(925, game.world.height - 1160, 'door_u');
+          game.physics.arcade.enable(door_u);
+          door_u.body.immovable= true;
+
+          // SHOE RACK 300x25; 200x25
+
+          shoe_rack = game.add.physicsGroup();
+          shoe_rack.enableBody = true;
+
+          s1 = shoe_rack.create(1325, game.world.height - 180, 'shoe_rack');
+          s1.bodying = false;
+          s2 = shoe_rack.create(1200, game.world.height - 300, 'shoe_rack_2');
+          s2.body.setSize(190, 25, 10, 0);
+          s3 = shoe_rack.create(1560, game.world.height - 370, 'shoe_rack_2');
+          s4 = shoe_rack.create(1200, game.world.height - 415, 'shoe_rack_v');
+          s4_block = shoe_rack.create(1203, game.world.height - 415, 'shoe_rack_v');
+          s5 = shoe_rack.create(1551, game.world.height - 375, 'shoe_rack_v2');  // 25x120
+          s5_block = shoe_rack.create(1556, game.world.height - 375, 'shoe_rack_v2');
+
+          //shoe_rack.body.setSize(220, 10, 0, 0);
+
+          //shoe_rack.forEach(function(shoe_rack) {shoe_rack.body.setSize(100, 1);});
+
+          shoe_rack.setAll('body.immovable', true);
+
+          // SPIDER WEB
+
+          /*spider_web = game.add.physicsGroup();
+          spider_web.enableBody = true;
+
+          spider_web.create(1200, game.world.height - 440, 'spider_web');
+          spider_web.create(1585, game.world.height - 345, 'spider_web');
+
+          spider_web.setAll('body.immovable', true);*/
+
+          // TRASH CAN?
+
+          trash = game.add.sprite(2000, game.world.height - 250, 'trash'); // 100x130
+          trash.bodying = false;
+          game.physics.arcade.enable(trash);
+          trash.body.immovable= true;
+          trash.body.setSize(70, 130, 10, 0);
+          trash_block = game.add.sprite(2005, game.world.height - 250, 'trash'); // 100x130
+          trash_block.bodying = false;
+          game.physics.arcade.enable(trash_block);
+          trash_block.body.immovable= true;
+          trash_block.body.setSize(70, 130, 10, 0);
+
+          // PILLOW 175x17
+
+          pillow = game.add.sprite(2430, game.world.height - 282, 'pillow');
+          game.physics.arcade.enable(pillow);
+          pillow.body.immovable= true;
+          pillow.body.setSize(175, 13, 0, 7);
+
+          // CHAIR SX
+
+          chair_sx = game.add.physicsGroup();
+          chair_sx.enableBody = true;
+          chair_sx.alpha = 0;
+
+          c1 = chair_sx.create(2440, game.world.height - 240, 'chair_legSX'); // 25x120
+          //c1.body.setSize(10, 130, 10, 0);
+          chair_sx.create(2580, game.world.height - 240, 'chair_legSX'); // leg DX
+          c2 =chair_sx.create(2410, game.world.height - 265, 'chair_seat'); // sedile
+          c2.body.setSize(160, 10, 30, 0);
+          //bar_chair = chair_sx.create(2370, game.world.height - 385, 'chair_legSX'); // barrapoggiaschiena
+          c3 = chair_sx.create(2412, game.world.height - 420, 'chair_SED_SX'); // poggiaschiena
+          c3.body.setSize(10, 50, 20, 0);
+          c3.alpha = 0;
+
+          chair_sx.setAll('body.immovable', true);
+
+          // CHAIR DX
+
+          chair_dx = game.add.physicsGroup();
+          chair_dx.enableBody = true;
+
+          chair_dx.create(3050 + 384, game.world.height - 240, 'chair_legSX'); // 25x120
+          chair_dx.create(3210 + 384, game.world.height - 240, 'chair_legSX'); // leg DX
+          chair_dx.create(3040 + 384, game.world.height - 265, 'chair_seat'); // sedile
+          chair_dx.create(3050 + 384, game.world.height - 385, 'chair_legSX'); // barrapoggiaschiena
+          chair_dx.create(3210 + 384, game.world.height - 385, 'chair_legSX'); // barrapoggiaschiena
+          chair_dx.create(3040 + 384, game.world.height - 420, 'chair_SED_DX'); // poggiaschiena  205x80
+
+          chair_dx.setAll('body.immovable', true);
+
+          // PILLOW DX
+
+          pillow_DX = game.add.sprite(3055 + 384, game.world.height - 282, 'pillow');
+          game.physics.arcade.enable(pillow_DX);
+          pillow_DX.body.immovable= true;
+          pillow_DX.body.setSize(175, 13, 0, 7);
+
+          // TABLE
+
+          table = game.add.physicsGroup();
+          table.enableBody = true;
+
+          tleg1 = table.create(2620, game.world.height - 400, 'table_leg'); // 50x280
+          tleg2 = table.create(3294, game.world.height - 400, 'table_leg'); // leg DX
+          table_plane = table.create(2590, game.world.height - 403, 'table_plane');// 784x50
+
+          table.setAll('body.immovable', true);
+
+          // KNIFE
+
+          knife = game.add.sprite(2935 + 230, game.world.height - 540, 'knife'); // 31x140
+          game.physics.arcade.enable(knife);
+          knife.body.immovable = true;
+
+          knife_base = game.add.sprite(2895 + 230, game.world.height - 410, 'knife_base'); // 79x10
+          game.physics.arcade.enable(knife_base);
+          knife_base.body.immovable = true;
+
+          knife_death = game.add.sprite(2935 +230, game.world.height - 483, 'knife_death'); // 31x83
+          game.physics.arcade.enable(knife_death);
+          knife_death.body.immovable = true;
+
+          // EGG SHELF
+
+          egg_shelf = game.add.sprite(game.world.width -900 -300, game.world.height - 320, 'egg_shelf'); // 300x200
+          game.physics.arcade.enable(egg_shelf);
+          egg_shelf.body.immovable = true;
+
+          egg_platform = game.add.physicsGroup();
+          egg_platform.enableBody = true;
+
+          egg_platform.create(game.world.width - 1180 -300, game.world.height - 220, 'shoe_rack_2'); // 200x25
+          egg_platform.create(game.world.width - 1230 -300, game.world.height - 320, 'shoe_rack_2');
+          egg_platform.create(game.world.width - 1020 -300, game.world.height - 440, 'shoe_rack_2');
+
+          egg_platform.setAll('body.immovable', true);
+
+          small_shelf = game.add.sprite(game.world.width - 700 -300, game.world.height - 470, 'egg_shelf_small'); //100x150
+          game.physics.arcade.enable(small_shelf);
+          small_shelf.body.immovable = true;
+
+          image_a = game.add.sprite(0, 0, 'LV2_a');
+          //image_a = game.add.sprite(0, 0, 'LV2_aa');
+
+          // BEANS
+          bean = game.add.physicsGroup();
+          bean.enableBody = true;
+
+          b = bean.create(B1x = 40, B1y = game.world.height - 110 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(450, game.world.height - 270 - 30 -20, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(750, game.world.height - 340 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(1270, game.world.height - 370 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(1800, game.world.height - 240 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(1890, game.world.height - 500 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(2520, game.world.height - 370 - 30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(3400 + 384, game.world.height - 500 -30, 'brillo');
+          b.spawn = b.y;
+          b = bean.create(3780 + 384, game.world.height - 400 -30, 'brillo');
+          b.spawn = b.y;
+
+          bean.children.forEach(function(beanbody){
+          beanbody.body.setSize(60, 60, 25, 25);
+          });
+
+          //game.physics.arcade.enable(door);
+
+          player = game.add.sprite(230, game.world.height - 122, 'jack');   //27x40--35.1x52
+
+          game.physics.arcade.enable(player);
+
+          player.body.collideWorldBounds = true;
+
+          //player.scale.setTo(1.3,1.3);
+
+          player.animations.add('right', [6, 7, 8], 10, true);
+          player.animations.add('left', [2, 1, 0], 10, true);
+
+          schizzo = player.addChild(game.make.sprite(-5, 70, 'schizzo'));
+          schizzo.alpha = 0;
+          schizzo.animations.add('schizzo');
+          schizzo.animations.play('schizzo', 30, true);
+          schizzo.anchor.x = 0;
+          schizzo.anchor.y = 1;
+
+          /*schizzo_PosX = 0;
+          schizzo_PosY = 0;
+
+          schizzo = game.add.sprite(schizzo_PosX, schizzo_PosY, 'schizzo');
+          game.physics.arcade.enable(schizzo);
+          schizzo.animations.add('schizzo');
+          schizzo.animations.play('schizzo', 15, true);*/
+
+          //door_c = game.add.sprite(965, game.world.height - 460, 'door_c');  //35x180
+
+          cccccc = bar_chair = game.add.sprite(2420, game.world.height - 385, 'chair_legSX');
+            cccccc.alpha = 0;
+          // WATER
+
+          water_small_2 = game.add.physicsGroup();
+          water_small_2.enableBody = true;
+          water_small_2.alpha = 0;
+
+          water_1 = water_small_2.create(game.world.width -190 -300, game.world.height - 310, 'water_1'); // 450x15
+          water_2 = water_small_2.create(game.world.width -340 -300, game.world.height - 225, 'water_1a'); // 150x15
+          water_3 = water_small_2.create(600, game.world.height - 135 -10, 'water_3');
+          water_4 = water_small_2.create(300, game.world.height - 95 -10, 'water_4');
+          water_5 = water_small_2.create(0, game.world.height - 55 -10, 'water_3');
+
+          water_small_2.setAll('body.immovable', true);
+
+          // BATHROOM STEP
+
+          final_step = game.add.sprite(game.world.width -190 -300, game.world.height - 295, 'final_step'); // 150x295
+          game.physics.arcade.enable(final_step);
+          final_step.body.immovable = true;
+          final_step.alpha = 0;
+          final_step_2 = game.add.sprite(game.world.width -340 -300, game.world.height - 210, 'final_step'); // 150x295
+          game.physics.arcade.enable(final_step_2);
+          final_step_2.body.immovable = true;
+          final_step_2.alpha = 0;
+
+          // POT
+
+          pot = game.add.physicsGroup();
+          pot.enableBody = true;
+
+          pot1 = pot.create(2760 + 164, game.world.height - 480, 'pot'); // 15x80
+          pot2 = pot.create(2860 + 164, game.world.height - 480, 'pot'); // 15x80
+          pot_front = pot.create(2760 + 164, game.world.height - 480, 'pot_front'); //115x80
+          pot_front.body.setSize(115, 45, 0, 35);
+
+          pot.children.forEach(function(pott){
+          pott.alpha = 0;
+          });
+
+          pot.setAll('body.immovable', true);
+
+          pentola = game.add.sprite(2760 + 164 -15, game.world.height - 480, 'pentola');
+
+          // TABLE OBJECT
+
+          table_object = game.add.sprite(2680, game.world.height - 476, 'table_object'); // 40x70
+          game.physics.arcade.enable(table_object);
+          table_object.body.immovable = true;
+          table_object.alpha = 0;
+
+          // FIRST CUP
+
+          cups = game.add.sprite(2640 + 164 -13, game.world.height - 530-4, 'cups'); // 25x130
+          game.physics.arcade.enable(cups);
+          cups.body.immovable= true;
+          cups.alpha = 0;
+
+          // BATHROOM DOOR
+
+          bathroom_door = game.add.sprite(game.world.width - 40, game.world.height - 1120, 'bathroom_door'); // 40x1000
+          game.physics.arcade.enable(bathroom_door);
+          bathroom_door.body.immovable= true;
+
+          // MOUSE
+
+          mouse = game.add.sprite(2100, game.world.height - 172 -15, 'TOPO');   // 193x52
+          game.physics.arcade.enable(mouse);
+          mouse.body.collideWorldBounds = true;
+          mouse.body.gravity.y = 600;
+          mouse.animations.add('right', [3, 4, 5], 10, true);
+          mouse.animations.add('left', [2, 1, 0], 10, true);
+
+          // HUD
+
+          /*score_BeanText = game.add.text(16, game.world.height - 600, 'Remaining beans: 3', { fontSize: '32px', fill: '#FFF' });
+          score_BeanText.fixedToCamera = true;
+          score_BeanText.cameraOffset.setTo(16, 150);
+          console.log(score_BeanText);*/
+
+          //weapon.trackSprite(player, 23, 25, true);
+
+          /*game.time.events.add(Phaser.Timer.SECOND * 1, destroyWeapon, this);
+          function destroyWeapon () {
+             weapon.bullets.destroy();
+          }*/
+          /*game.time.events.loop(1000, destroyWeapon);
+          function destroyWeapon () {
+             weapon.destroy();
+          }*/
+
+          explosions = game.add.group();
+          explosions.createMultiple(30, 'blood');
+          explosions.forEach(setupInvader, this);
+
+          function setupInvader (player) {
+             player.anchor.x = 0.5;
+             player.anchor.y = 0.5;
+             player.animations.add('blood');
+          }
+
+          game.camera.follow(player); // camera segue omino
+
+          // PUNCH
+          /*punch = game.add.physicsGroup();
+          punch.enableBody = true;
+
+          punch.fire = false;*/
+
+          // ENEMY
+
+          /*ant = game.add.sprite(450, game.world.height - 290, 'ant_sx');
+
+          game.physics.arcade.enable(ant);
+
+          ant.body.collideWorldBounds = true;
+          ant.body.gravity.y = 600; //500*/
+
+          //////////////////////////////////// INIZIO LIVELLO
+
+          // ENTRY STAIRS
+
+          /*entrance_stairs = game.add.sprite(0, game.world.height - 70, 'entrance_stairs');
+          game.physics.arcade.enable(entrance_stairs);
+          entrance_stairs.body.immovable= true;*/
+          entrance_stairs = game.add.physicsGroup();   //300x100
+          entrance_stairs.enableBody = true;
+
+          entrance_stairs.create(0, game.world.height - 50, 'entrance_stairs');
+          entrance_stairs.create(300-13, game.world.height - 90, 'entrance_stairs');
+          entrance_stairs.create(600-12, game.world.height - 130, 'entrance_stairs');
+
+          entrance_stairs.setAll('body.immovable', true);
+
+          entrance_stairs.children.forEach(function(es){
+          es.alpha = 0;
+          });
+
+          // GROUND
+
+          ground_2 = game.add.sprite(600, game.world.height - 130, 'ground_2');  //1000x172
+          game.physics.arcade.enable(ground_2);
+          ground_2.body.immovable= true;
+          ground_2.alpha = 0;
+
+          copri = game.add.sprite(-100, game.world.height - 40, 'copri');  //1000x172
+          game.physics.arcade.enable(copri);
+          copri.body.immovable= true;
+
+
+          // CLOUDS
+
+          //cloud_2 = game.add.sprite(-130, game.world.height - 133, 'cloud');
+          cloud_2 = game.add.physicsGroup();   //456x163
+          cloud_2.enableBody = true;
+
+          cl1 = cloud_2.create(-130, game.world.height - 133, 'cloud_6');
+          cl1.alpha = 0.9;
+          cl2 = cloud_2.create(200, game.world.height - 60, 'cloud_6');
+          cl2.alpha = 0.9;
+          cloud_2.create(450, game.world.height - 40, 'cloud_6');
+
+          cl3 = cloud_2.create(670, game.world.height - 80, 'cloud_6');
+          cl3.alpha = 0.9;
+
+          cloud_2.setAll('body.immovable', true);
+
+          // WATER OBJECTS
+
+          // WATER
+          /*water = game.add.sprite(0, game.world.height - 100, 'water');
+          game.physics.arcade.enable(water);
+          water.alpha = 0.5;
+
+          player.swimming = false;*/
+
+          // BEANS 128x128
+
+          bean.setAll('body.immovable', true);  // VA DOPO LE PIATTAFORME
+
+          // BEAN animations
+
+          bean.createMultiple(30, 'brillo');
+          bean.forEach(setupbean, this);
+
+          function setupbean (bean) {
+             bean.anchor.x = 0.5;
+             bean.anchor.y = 0;
+             bean.animations.add('light_sparkle');
+             bean.animations.play('light_sparkle', 15, true);
+          }
+          energy = game.add.group();
+          energy.createMultiple(30, 'energy_bean');
+          energy.forEach(setupBean, this);
+
+          function setupBean (bean) {
+             bean.anchor.x = 0.3;
+             bean.anchor.y = 0.3;
+             bean.animations.add('energy_bean');
+          }
+
+          ////////////////////////////////////////////////// HUD
+
+          bean_border = game.add.graphics(20 , 32);
+
+          bean_border.lineStyle(3, 0xffffff, 1);//1d6208
+          bean_border.drawRect(0, 0, 250/1.3, 15/1.3);
+          bean_border.fixedToCamera = true;
+
+          bean_border_2 = game.add.graphics(20 , 32);
+
+          bean_border_2.lineStyle(3, 0xffffff, 1);
+          bean_border_2.drawRect(0, 0, 83/1.3, 15/1.3);
+          bean_border_2.fixedToCamera = true;
+
+          bean_border_3 = game.add.graphics(20 , 32);
+
+          bean_border_3.lineStyle(3, 0xffffff, 1);
+          bean_border_3.drawRect(0, 0, 166/1.3, 15/1.3);
+          bean_border_3.fixedToCamera = true;
+
+          cerchio_verde = game.add.sprite(318.7 -30 -20 -57 , 16, 'cerchio-verde');
+          cerchio_verde.fixedToCamera = true;
+
+          fagiolo = game.add.sprite((280 -30 -20 + 8)/1.3 -2, -7 - 12 + 5, 'brillo_hud');
+          fagiolo.fixedToCamera = true;
+          fagiolo.animations.add('active', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15, true);
+          fagiolo.animations.add('fixed', [16], 15, true);
+          //fagiolo.animations.add('brillo_hud');
+          //fagiolo.animations.play('brillo_hud', 15, true);
+
+
+          mouse.notJump = false;
+
+          ////////////////////////////////////////// PAUSE
+
+          pause_page = game.add.sprite(0, 0, 'pause_page');
+          pause_page.fixedToCamera = true;
+          pause_page.alpha = 0;
+          pause_commands = game.add.physicsGroup();
+
+          /*resume = pause_commands.create(280, 158, 'resume');
+          resume.fixedToCamera = true;
+          resume.alpha = 0;*/
+          restart = pause_commands.create(280, 158, 'restart');
+          restart.fixedToCamera = true;
+          restart.alpha = 0;
+          controls = pause_commands.create(280, 258, 'controls');
+          controls.fixedToCamera = true;
+          controls.alpha = 0;
+          backhome = pause_commands.create(280, 358, 'backhome');
+          backhome.fixedToCamera = true;
+          backhome.alpha = 0;
+
+          menu = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+
+          cursors = game.input.keyboard.createCursorKeys();
+          jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+          superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+          pauseESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+          goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+          goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+          goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+          goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+          goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+          /*fireButton = game.input.keyboard.addKey(Phaser.Keyboard.F);*/
+
+          game.paused = false;
+
+          player.jumpingW = false;
+
+          },
+          /*pauseGame: function() {
+          game.paused = true;
+        },*/
+          /*timeCounter_weapon: function() {
+              weapon.killAll();
+          },*/
+
+update: function() {
+
+  window.onkeydown = function(event) {
+
+    if (event.keyCode == 80)
+    {
+      game.paused = !game.paused;
+
+      if(game.paused){
+
+      }
+      if(!game.paused){
+
+      }
+
+
+    }
+  }
+  if (menu.isDown)
+  {
+    pause_page.alpha = 0.8;
+    pause_page.inputEnabled = true;
+    pause_page.events.onInputDown.add(this.imageClick, this);
+
+    restart.alpha = 1;
+    restart.inputEnabled = true;
+    restart.events.onInputDown.add(this.restartClick, this);
+    controls.alpha = 1;
+    controls.inputEnabled = true;
+    controls.events.onInputDown.add(this.controlsClick, this);
+    backhome.alpha = 1;
+    backhome.inputEnabled = true;
+    backhome.events.onInputDown.add(this.backhomeClick, this);
+  }
+  else
+  {
+    pause_page.alpha = 0;
+
+    restart.alpha = 0;
+    controls.alpha = 0;
+    backhome.alpha = 0;
+  }
+
+
+
+
+          //platformBounce.angle += 0.5;   // PER RUOTARE NEL TEMPO
+
+          var hitPlatform = game.physics.arcade.collide(player, platforms);
+          var hitDoor = game.physics.arcade.collide(player, door_d);
+
+          game.physics.arcade.overlap(player, exit_2, this.collect_exit_2, null, this);
+          game.physics.arcade.overlap(player, bean, this.collectbean, null, this);
+          game.physics.arcade.overlap(player, knife_death, this.knifeDeath, null, this);
+          game.physics.arcade.overlap(player, mouse, this.mouseDeath, null, this);
+          game.physics.arcade.overlap(player, bathroom_door, this.exit_bathroom_door, null, this);
+          var water_slow_2 = game.physics.arcade.overlap(player, water_small_2);
+
+          /*game.physics.arcade.collide(player, object_0);
+          game.physics.arcade.collide(player, object_1);
+          game.physics.arcade.collide(player, object_2);
+          game.physics.arcade.collide(player, object_3);
+          game.physics.arcade.collide(player, object_4);*/
+          game.physics.arcade.collide(player, ground_2);
+          game.physics.arcade.collide(mouse, ground_2);
+          game.physics.arcade.collide(player, entrance_stairs);
+          game.physics.arcade.collide(player, door);
+          game.physics.arcade.collide(player, door_d);
+          var hitdoor_d_block = game.physics.arcade.collide(player, door_d_block);
+          game.physics.arcade.collide(player, door_u);
+          var hitS1 = game.physics.arcade.collide(player, s1);
+          game.physics.arcade.collide(player, s2);
+          game.physics.arcade.collide(player, s3);
+          game.physics.arcade.collide(player, s4);
+          var hits4block =game.physics.arcade.collide(player, s4_block);
+          var hitS5 = game.physics.arcade.collide(player, s5);
+          var hitS5block = game.physics.arcade.collide(player, s5_block);
+          var hittrash  =game.physics.arcade.collide(player, trash);
+          var hittrashblock  =game.physics.arcade.collide(player, trash_block);
+          game.physics.arcade.collide(player, chair_sx);
+          var hitc1 =game.physics.arcade.collide(player, c1);
+          var hitPillow = game.physics.arcade.collide(player, pillow);
+          game.physics.arcade.collide(player, table_plane);
+          game.physics.arcade.collide(player, tleg1);
+          game.physics.arcade.collide(player, tleg2);
+          var hitPillowDX = game.physics.arcade.collide(player, pillow_DX);
+          var hitPot1 = game.physics.arcade.collide(player, pot1);
+          var hitPot2 = game.physics.arcade.collide(player, pot2);
+          game.physics.arcade.collide(player, pot_front);
+          game.physics.arcade.collide(player, knife_base);
+          game.physics.arcade.collide(player, final_step);
+          game.physics.arcade.collide(player, final_step_2);
+          var hitCups = game.physics.arcade.collide(player, cups);
+          game.physics.arcade.collide(player, table_object);
+          var hitEggShelf = game.physics.arcade.collide(player, egg_shelf);
+          game.physics.arcade.collide(player, egg_platform);
+          var hitEggShelfSmall = game.physics.arcade.collide(player, small_shelf);
+          //game.physics.arcade.collide(player, spider_web);
+
+          //game.physics.arcade.collide(player, door_2);
+          /*game.physics.arcade.collide(player, ant, this.killAnt_1, null, this);
+          game.physics.arcade.collide(ant, ground);
+          game.physics.arcade.collide(ant, platforms);
+          game.physics.arcade.overlap(weapon.bullets, ant, this.killAnt, null, this);
+          //game.physics.arcade.overlap(punch, ant, this.onepunchman, null, this);
+          game.physics.arcade.overlap(player, water, this.swimming, null, this);*/
+
+          //player.body.velocity.x = player.body.velocity.x*0.9; // ATTRITO
+          player.body.velocity.x = 0;
+          player.body.gravity.y = 600; //500
+
+          mouse.body.velocity.x = mouse.body.velocity.x*0.9;
+
+          if (water_slow_2 === true)
+          {
+            schizzo.alpha = 1;
+            if (player.jumpingW === true)
+            {
+              game.time.events.add(Phaser.Timer.SECOND * 0.05, Touch, this);
+              function Touch () {
+                //player.body.touching = true;
+              }
+            }
+            if (cursors.left.isDown)
+            {
+                player.body.velocity.x = -350;
+                player.animations.play('left');
+            }
+            else if (cursors.right.isDown){
+                 player.body.velocity.x = 150;
+                 player.animations.play('right');
+              }
+            else
+            {
+                 player.animations.stop();
+                 player.frame = 4;
+                 schizzo.alpha = 0;
+                 //schizzo_2.alpha = 0;
+            }
+            if (jumpButton.isDown)
+            {
+              game.time.events.add(Phaser.Timer.SECOND * 0.5, notTouch, this);
+              function notTouch () {
+                player.jumpingW = true;
+                //player.body.touching = false;
+              }
+            }
+          }
+          else if (water_slow_2 === false)
+          {
+            schizzo.alpha = 0;
+            if (cursors.left.isDown)
+            {
+                player.body.velocity.x = -250;
+                player.animations.play('left');
+            }
+            else if (cursors.right.isDown)
+            {
+               player.body.velocity.x = 250;
+               player.animations.play('right');
+            }
+            else
+            {
+                 player.animations.stop();
+                 player.frame = 4;
+            }
+          }
+
+          /*if (cursors.up.isDown)
+          {
+            punch.fire = true;
+            //for (var i=0; i<2; i++){
+            if(punch.fire = true){
+            var Punch = punch.create(player.body.position.x + 10, player.body.position.y, 'punch');
+            Punch.body.velocity.x = 100;
+            }
+            //onepunchman();
+          }*/
+          //if (player.body.position.y < game.world.height - 180) {   // MAGICCCCCCCCCCCCCCCCC
+            //s1.bodying = true;
+            /*shoe_rack.enableBody = true;
+            shoe_rack.setAll('body.immovable', true);
+            game.physics.arcade.collide(player, shoe_rack);*/
+            /*if (s1.bodying === true){
+            game.physics.arcade.enable(s1);
+            s1.body.immovable= true;
+            var hitS1 = game.physics.arcade.collide(player, s1);
+            }
+
+          if (player.body.position.y < game.world.height - 270) {   // TRASH
+            trash.bodying = true;
+            /*shoe_rack.enableBody = true;
+            shoe_rack.setAll('body.immovable', true);
+            game.physics.arcade.collide(player, shoe_rack);*/
+            /*if (trash.bodying === true){
+            game.physics.arcade.enable(trash);
+            trash.body.immovable= true;
+            game.physics.arcade.collide(player, trash);
+          }*/
+          //}
+          /*if (player.body.position.x > cups.body.position.x) {   // CUPS
+            var hitCups = game.physics.arcade.collide(player, cups);
+          }*/
+          if (jumpButton.isDown && player.body.velocity.y==0 && (player.body.onFloor() || player.body.touching.down || hitS1))
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitDoor)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown &&hitdoor_d_block)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitS5)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown && hits4block)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown && hitS5block)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hittrash)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown && hittrashblock)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitc1)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitPot1)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown && hitPot2)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.right.isDown && hitCups)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitEggShelf)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (jumpButton.isDown && cursors.left.isDown && hitEggShelfSmall)
+          {
+              player.body.velocity.y = -300;
+          }
+          if (superJumpButton.isDown && player.body.touching.down)
+          {
+            if(score_Bean === 0){
+                  superJump += -600;
+                  score_Bean += 3;
+                  bbar1.destroy();
+                  bbar2.destroy();
+                  bbar3.destroy();
+                }
+                if(score_Bean < 0){
+                      score_Bean += 1;
+                    }
+              player.body.velocity.y = superJump;
+              superJump = 0;
+          }
+         /*if(pauseESC.isDown && game.paused === false)
+         {
+              game.paused = true;
+         }
+         else if (pauseESC.isDown && game.paused)
+         {
+              game.paused = false;
+         }*/
+
+          if (player.body.position.y > game.world.height - 180)
+          {
+            s1.bodying = false;
+          }
+          if (player.body.touching.down && (hitPillow || hitPillowDX ))
+          {
+              player.body.velocity.y = -500;
+          }
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// MOUSE
+
+          game.physics.arcade.collide(mouse, final_step);
+          game.physics.arcade.collide(mouse, final_step_2);
+
+          if (player.body.position.x > mouse.body.position.x - 400 && player.body.position.x < mouse.body.position.x + 600)
+          {
+            if (mouse.body.position.x > player.body.position.x)
+            {
+              game.time.events.add(Phaser.Timer.SECOND * 0.5, mouseTurn, this);
+              function mouseTurn () {
+                mouse.body.velocity.x = -200;
+                mouse.animations.play('left');
+                mouse.body.setSize(100, 52, 0, 0);
+              }
+            }
+            else if (mouse.body.velocity.x === 0)
+            {
+              mouse.animations.stop();
+              mouse.frame = 0;
+            }
+            if (mouse.body.position.x < player.body.position.x)
+            {
+              game.time.events.add(Phaser.Timer.SECOND * 0.5, mouseTurn2, this);
+              function mouseTurn2 () {
+                mouse.body.velocity.x = 200;
+                mouse.animations.play('right');
+                mouse.body.setSize(100, 52, 90, 0);
+              }
+            }
+            else if (mouse.body.velocity.x === 0)
+            {
+              mouse.animations.stop();
+              mouse.frame = 1;
+              mouse.body.setSize(100, 52, 0, 0);
+            }
+          }
+          if (mouse.body.position.x < game.world.width - 600 -300)
+          {
+            mouse.notJump = false;
+          }
+          if (mouse.body.position.x > game.world.width - 600 -300 && mouse.body.position.y > game.world.height - 210)
+          {
+            if (mouse.notJump === false)
+            {
+              mouse.body.velocity.y = -300;
+              game.time.events.add(Phaser.Timer.SECOND * 0.1, mouseJump, this);
+              function mouseJump () {
+              mouse.notJump = true;
+            }
+            }
+          }
+          if (mouse.body.position.x > game.world.width - 600 -300 && mouse.body.position.x < game.world.width - 400 -300)
+          {
+            mouse.notJump = false;
+          }
+          if (mouse.body.position.x > game.world.width - 400 -300 && mouse.body.position.y > game.world.height - 295)
+          {
+            if (mouse.notJump === false)
+            {
+              mouse.body.velocity.y = -300;
+              game.time.events.add(Phaser.Timer.SECOND * 0.1, mouseJump2, this);
+              function mouseJump2 () {
+              mouse.notJump = true;
+            }
+            }
+          }
+
+          if(score_Bean <= 0)
+          {
+          fagiolo.animations.play('active');
+          }
+          else
+          {
+            fagiolo.animations.play('fixed');
+          }
+
+          if (goToTut.isDown)
+          {
+              this.game.state.start('Tutorial');
+          }
+          if (goToLv1.isDown)
+          {
+              this.game.state.start('Game1');
+          }
+          if (goToLv2.isDown)
+          {
+              this.game.state.start('Game2');
+          }
+          if (goToLv3.isDown)
+          {
+              this.game.state.start('Game3');
+          }
+          if (goToCover.isDown)
+          {
+              this.game.state.start('Start');
+          }
+          /*else {
+            shoe_rack.enableBody = false;
+          }*/
+          /*if (fireButton.isDown)
+          {
+
+              bullet = weapon.fire();
+              if(bullet)
+                game.time.events.add(500, this.timeCounter_weapon);
+              //weapon.bullets.forEach(timer_bullet, this);
+          }*/
+          /*if(player.body.position.y > game.world.height - 250)  // WATER PHYSICS
+          player.body.gravity.y = -700*0.7;
+          if(player.body.position.y < game.world.height - 250)
+          player.body.gravity.y = 300;
+          if(player.body.position.y < game.world.height - 300)
+          player.body.gravity.y = 600;*/
+        },
+          exit_bathroom_door: function (player, bathroom_door) {
+                this.game.state.start('Game3');
+          },
+          collectbean: function (player, bean) {
+            console.log("visto")
+            bean.y = -10000;
+
+
+              game.time.events.add(5000,function f(){console.log("ora"); bean.y=bean.spawn})
+
+            var Energy = energy.getFirstExists(false);
+            Energy.reset(bean.body.x, bean.body.y);
+            Energy.play('energy_bean', 30, false, true);
+
+            //  Add and update the score
+            score_Bean--;
+            //score_BeanText.text = 'Remaining beans: ' + score_Bean;
+            /*if(score_Bean === 0){
+                  superJump += -600;
+                  score_Bean += 3;
+                }*/
+                if(score_Bean === 2)
+                {
+                bean_bar_1 = game.add.graphics(71 -30 -20, 51 -18.3);
+                bean_bar_1.fixedToCamera = true;
+                bean_bar_1.beginFill(0x9bf380, 1);
+                bbar1 = bean_bar_1.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+                bean_bar_1.endFill();
+                }
+                if(score_Bean === 1)
+                {
+                bean_bar_2 = game.add.graphics(154 -30 -20 -19, 51 -18.3);
+                bean_bar_2.fixedToCamera = true;
+                bean_bar_2.beginFill(0x9bf380, 1);
+                bbar2 = bean_bar_2.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+                bean_bar_2.endFill();
+                }
+                if(score_Bean === 0)
+                {
+                bean_bar_3 = game.add.graphics(237 -30 -20 -38, 51 -18.3);
+                bean_bar_3.fixedToCamera = true;
+                bean_bar_3.beginFill(0x9bf380, 1);
+                bbar3 = bean_bar_3.drawRect(1, 1, 81/1.3, 12/1.3); //247x13
+                bean_bar_3.endFill();
+                }
+
+          },
+          knifeDeath: function (player, knife_death) {
+            player.kill();
+
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x, player.body.y);
+            explosion.play('blood', 30, false, true);
+
+            game.time.events.add(Phaser.Timer.SECOND * 1, badStateOn, this);
+            function badStateOn () {
+              this.game.state.start('Bad2');
+            }
+          },
+          mouseDeath: function (player, mouse) {
+            player.kill();
+
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x, player.body.y);
+            explosion.play('blood', 30, false, true);
+
+            game.time.events.add(Phaser.Timer.SECOND * 1, badStateOn, this);
+            function badStateOn () {
+              this.game.state.start('Bad2');
+            }
+          },
+          badStateOn: function () {
+            this.game.state.start('Bad2');
+          },
+          /*killAnt_1: function (player, ant) {
+            if(player.body.touching.down && ant.body.touching.up)
+            ant.kill();
+            else {
+              player.kill();
+            }
+          },*/
+          /*onepunchman: function () {
+            for (var i=0; i<2; i++){
+            var Punch = punch.create(player.body.position.x + 10, player.body.position.y, 'punch');
+            }
+          },*/
+          /*killAnt: function (weapon, ant) {
+            ant.kill();
+            //weapon.kill();
+          },
+          swimming: function (player, water) {
+            player.swimming = true;
+            player.body.velocity.x = -500;
+          },*/
+          restartClick: function(pointer) {
+              this.game.state.start('Game1');
+          },
+          controlsClick: function(pointer) {
+              this.game.state.start('Controls');
+          },
+          backhomeClick: function(pointer) {
+              this.game.state.start('Start');
+          },
+
+render: function() {
+
+          //game.debug.cameraInfo(game.camera, 500, 32); //dati posizione ecc. @
+          //game.debug.spriteCoords(player, 32, 32);
+          //game.debug.body(player);
+          //game.debug.body(knife_death);
+          //game.debug.body(platformBounce);
+          //weapon.debug();
+          //game.debug.body(mouse);
+          //
+          //game.debug.body(ground_2);
+          //game.debug.body(cups);
+          //game.debug.physicsGroup(entrance_stairs);
+          //game.debug.physicsGroup(table);
+
+          /*game.debug.body(door_d_block);
+          game.debug.body(door_u);
+          game.debug.body(s5_block);
+          game.debug.body(s5);
+          game.debug.body(trash);
+          game.debug.body(trash_block);
+          game.debug.body(c1);
+          game.debug.body(c2);
+          game.debug.body(c3);*/
+
+}
+
+}  //Gamestate2
+
+game.state.add('Game2', Game2State);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// LEVEL 3
+var score_block = 1;
+var Game3State = {
+    preload: function() {
+
+          game.stage.backgroundColor = '#a0a2a0'; //#85b5e1
+
+          game.load.baseURL = 'http://examples.phaser.io/assets/';
+          game.load.crossOrigin = 'anonymous';
+          game.load.image('braccio', 'http://127.0.0.1/img/braccio.png');
+          game.load.image('LV2_b', 'http://127.0.0.1/img/LV2_b.png');
+          game.load.image('controls_page', 'http://127.0.0.1/img/controls_page.png');
+          game.load.image('bolla_ui', 'http://127.0.0.1/img/bolla_ui.png');
+          game.load.image('oxygen_bar', 'http://127.0.0.1/img/oxygen_bar.jpg');
+          game.load.image('bathroom_door', 'http://127.0.0.1/img/bathroom_door.jpg');
+          game.load.image('bathroom_step', 'http://127.0.0.1/img/bathroom_step.jpg');
+          game.load.image('bathroom_ground', 'http://127.0.0.1/img/bathroom_ground.jpg');
+          game.load.image('bathroom_ground_2', 'http://127.0.0.1/img/bathroom_ground_2.jpg');
+          game.load.image('bathroom_ground_3', 'http://127.0.0.1/img/bathroom_ground_3.jpg');
+          game.load.image('player', 'sprites/phaser-dude.png');
+          game.load.image('player_head', 'http://127.0.0.1/img/player_head.png');
+          game.load.image('bean', 'http://127.0.0.1/img/white.png');
+          game.load.image('cerchio-verde', 'http://127.0.0.1/img/cerchio-verde.png');
+          game.load.image('cerchio-azzurro', 'http://127.0.0.1/img/cerchio-azzurro.png');
+          game.load.image('tub', 'http://127.0.0.1/img/tub.png');
+          game.load.image('tub_platform', 'http://127.0.0.1/img/tub_platform.png');
+          game.load.image('tub_2', 'http://127.0.0.1/img/tub_2.png');
+          game.load.image('tap_1', 'http://127.0.0.1/img/tap_1.png');
+          game.load.image('tap_water', 'http://127.0.0.1/img/tap_water.jpg');
+          game.load.image('tap_destroy', 'http://127.0.0.1/img/tap_destroy.png');
+          game.load.image('water', 'http://127.0.0.1/img/water.jpg');
+          game.load.image('water_small', 'http://127.0.0.1/img/water_small.jpg');
+          game.load.image('duckie_1', 'http://127.0.0.1/img/duckie_1.png');
+          game.load.image('duckie_2', 'http://127.0.0.1/img/duckie_2.png');
+          game.load.image('quack', 'http://127.0.0.1/img/quack.png');
+          game.load.image('zzz', 'http://127.0.0.1/img/zzz.png');
+          game.load.image('bubble', 'http://127.0.0.1/img/bubble.png');
+          game.load.image('toothbrush', 'http://127.0.0.1/img/toothbrush.png');
+          //game.load.image('razor', 'http://127.0.0.1/img/razor.png');
+          game.load.image('dentifricio', 'http://127.0.0.1/img/dentifricio.png');
+          //game.load.spritesheet('energy_bean', 'http://localhost/img/acidgun_die.png', 100, 100);
+          game.load.spritesheet('energy_bean', 'http://127.0.0.1/img/heal_002.png', 192, 192);
+          game.load.spritesheet('light_sparkle', 'http://127.0.0.1/img/light_sparkle.png', 60, 60);
+          game.load.spritesheet('mouse', 'http://127.0.0.1/img/mouse.png', 193, 52);
+          game.load.spritesheet('TOPO', 'http://127.0.0.1/img/TOPO.png', 188, 52);
+          game.load.spritesheet('blood', 'http://127.0.0.1/img/blood.png', 100, 100);
+          game.load.spritesheet('jack_3', 'http://127.0.0.1/img/jack_3.png', 55.6, 59);
+          game.load.spritesheet('jack_swimming', 'http://127.0.0.1/img/jack_swimming.png', 63.8, 44);
+          game.load.spritesheet('brillo', 'http://127.0.0.1/img/brillo.png', 110, 110);
+          game.load.spritesheet('brillo_hud', 'http://127.0.0.1/img/brillo_hud.png', 103, 105);
+            game.load.spritesheet('rub', 'http://127.0.0.1/img/rub.png', 78, 100);
+},
+
+create: function() {
+
+         score_ground = 1
+         score_exitlight = 1;
+         score_platforms_death = 1;
+         score_Bean = 3;
+         superJump = 0;
+         score_pauseESC = 1;
+         //time_weapon = 1;
+
+          game.world.setBounds(0, 0, 2550 , 1000); //per uscire da schermo
+
+          image_b = game.add.sprite(0, 0, 'LV2_b');
+
+          zzzX = 1987;
+          zzzY = game.world.height - 700;
+          zzz = game.add.sprite(zzzX, zzzY, 'zzz');
+          game.physics.arcade.enable(zzz);
+          zzz.body.immovable= true;
+          zzz.scale.setTo(0.1,0.1);
+          zzz_2 = game.add.sprite(zzzX, zzzY, 'zzz');
+          game.physics.arcade.enable(zzz_2);
+          zzz_2.body.immovable= true;
+          zzz_2.scale.setTo(0.1,0.1);
+          zzz_3 = game.add.sprite(zzzX, zzzY, 'zzz');
+          game.physics.arcade.enable(zzz_3);
+          zzz_3.body.immovable= true;
+          zzz_3.scale.setTo(0.1,0.1);
+
+          zzz.moving = false;
+          zzz_2.moving = false;
+          zzz_3.moving = false;
+
+          // BEAN BAR
+
+          bean_border = game.add.graphics(20 , 32);
+
+          bean_border.lineStyle(3, 0xffffff, 1);//1d6208
+          bean_border.drawRect(0, 0, 250/1.3, 15/1.3);
+          bean_border.fixedToCamera = true;
+
+          bean_border_2 = game.add.graphics(20 , 32);
+
+          bean_border_2.lineStyle(3, 0xffffff, 1);
+          bean_border_2.drawRect(0, 0, 83/1.3, 15/1.3);
+          bean_border_2.fixedToCamera = true;
+
+          bean_border_3 = game.add.graphics(20 , 32);
+
+          bean_border_3.lineStyle(3, 0xffffff, 1);
+          bean_border_3.drawRect(0, 0, 166/1.3, 15/1.3);
+          bean_border_3.fixedToCamera = true;
+
+          cerchio_verde_1 = game.add.sprite(318.7 -30 -20 -57 , 16, 'cerchio-verde'); // 28
+          cerchio_verde_1.fixedToCamera = true;
+          cerchio_azzurro = game.add.sprite(318.7 -30 -20 -57 , 79-10 , 'cerchio-azzurro');
+          cerchio_azzurro.fixedToCamera = true;
+
+          bolla_ui = game.add.sprite(318.7 -30 -20 -57 + 8 , 79-10 +9, 'bolla_ui');
+          bolla_ui.fixedToCamera = true;
+
+          fagiolo_1 = game.add.sprite((280 -30 -20 + 8)/1.3 -2, -7 - 12 + 5, 'brillo_hud');
+          fagiolo_1.fixedToCamera = true;
+          fagiolo_1.animations.add('active', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 15, true);
+          fagiolo_1.animations.add('fixed', [16], 15, true);
+
+          // OXYGEN BAR
+
+          oxygen = game.add.graphics(20, 100-16);
+
+          //oxygen.lineStyle(2, 0x0000FF, 1);
+          oxygen.beginFill(0xffffff, 1);
+          oxygen.drawRect(1, 1, 247/1.3, 13/1.3);
+          oxygen.endFill();
+          oxygen.fixedToCamera = true;
+
+          border = game.add.graphics(20, 100-16);
+
+          border.lineStyle(3, 0xffffff, 1);//0000FF
+          border.drawRect(0, 0, 250/1.3, 15/1.3);
+          border.fixedToCamera = true;
+
+          tub = game.add.sprite(1776, game.world.height - 650, 'tub_2');  //720x435
+          game.physics.arcade.enable(tub);
+          tub.body.immovable= true;
+          tub.alpha = 0;
+
+          // TUB PLATFORM
+
+          tub_platform = game.add.sprite(1830, game.world.height - 452, 'tub_platform');  //720x435
+          game.physics.arcade.enable(tub_platform);
+          tub_platform.body.immovable= true;
+
+          tub_platform.bodying = false;
+
+          tap = game.add.physicsGroup();   //456x163
+          tap.enableBody = true;
+
+          tap_1 = tap.create(game.world.width - 80, game.world.height - 517, 'tap_1'); // 62x62
+          //tap_2 = tap.create(800, game.world.height - 370, 'tap_2');  // h=70
+          tap_1.alpha = 0;
+          rubinetto = game.add.sprite(game.world.width - 100, game.world.height - 517 -30 + 2.8, 'rub');
+          game.physics.arcade.enable(rubinetto);
+          rubinetto.body.setSize(78, 70, 0, 30);
+          rubinetto.body.immovable = true;
+          rubinetto.animations.add('rub',[0, 1, 2], 15, true);
+          rubinetto.animations.add('ruboff',[3, 4, 5, 6], 15);
+          rubinetto.animations.play('rub');
+
+          tap.setAll('body.immovable', true);
+
+          braccio = game.add.sprite(1990, game.world.height - 490, 'braccio');   //
+          game.physics.arcade.enable(braccio);
+          braccio.body.immovable = true;
+          braccio.alpha = 0;
+
+          player = game.add.sprite(0, game.world.height - 352, 'jack_3');   //27x40--35.1x52
+
+          game.physics.arcade.enable(player);
+
+          player.body.collideWorldBounds = true;
+
+          player.animations.add('right', [6, 7, 8], 10, true);
+          player.animations.add('left', [2, 1, 0], 10, true);
+          player.animations.add('swimsx', [9, 10, 11, 12], 10, true);
+          player.animations.add('swimdx', [14, 15, 16, 17], 10, true);
+          player.animations.add('jumpleft', [18], 10, true);
+          player.animations.add('jumpright', [20], 10, true);
+          player.animations.add('jumpcenter', [19], 10, true);
+
+
+          // MOUSE
+
+          mouse = game.add.sprite(-350, game.world.height - 352, 'TOPO');   // 193x52
+          game.physics.arcade.enable(mouse);
+          //mouse.body.collideWorldBounds = true;
+          mouse.body.gravity.y = 0;
+          mouse.animations.add('right', [3, 4, 5], 10, true);
+          //mouse.animations.add('left', [0], 10, true);
+
+          /*player_head = game.add.sprite(0, game.world.height - 327, 'player_head');
+          player_head.anchor.x = 0;
+          player_head.anchor.y = 1;*/
+          /*player_head = player.addChild(game.make.sprite(0, 25, 'player_head'));
+          player_head.anchor.x = 0;
+          player_head.anchor.y = 1;*/
+
+          /*player_group = game.add.physicsGroup();   //456x163
+          player_group.enableBody = true;
+
+          player_3 = player.create(0, game.world.height - 352, 'player'); // h=70
+          player_head = player.create(0, game.world.height - 327, 'player_head');  // h=70
+
+          //player.body.collideWorldBounds = true;
+
+          player_group.setAll('body.immovable', true);*/
+
+          // DUCKIE
+
+          duckie = game.add.physicsGroup();   //456x163
+          duckie.enableBody = true;
+
+          duckie_1 = duckie.create(600, game.world.height - 370, 'duckie_1'); // h=70
+          duckie_2 = duckie.create(800, game.world.height - 370, 'duckie_2');  // h=70
+          duckie_3 = duckie.create(1100, game.world.height - 370, 'duckie_2');  // h=70
+          duckie_4 = duckie.create(1350, game.world.height - 370, 'duckie_2');
+
+          duckie.setAll('body.immovable', true);
+
+          quack_1 = game.add.sprite(duckie_1.body.position.x + 50, duckie_1.body.position.y - 150, 'quack');
+          quack_1.alpha = 0;
+          quack_2 = game.add.sprite(duckie_2.body.position.x + 50, duckie_2.body.position.y - 150, 'quack');
+          quack_2.alpha = 0;
+          quack_3 = game.add.sprite(duckie_3.body.position.x + 50, duckie_3.body.position.y - 150, 'quack');
+          quack_3.alpha = 0;
+          quack_4 = game.add.sprite(duckie_4.body.position.x + 50, duckie_4.body.position.y - 150, 'quack');
+          quack_4.alpha = 0;
+
+          // OBJECTS IN THE water
+
+          some_objects = game.add.physicsGroup();   //456x163
+          some_objects.enableBody = true;
+
+          toothbrush = some_objects.create(750, game.world.height - 210, 'toothbrush'); //125x13
+          //toothbrush.body.setSize(100, 20, 0, 0);
+          razor = some_objects.create(1500, game.world.height - 210, 'dentifricio'); //100x75
+          razor.pivot.x = 100;
+          some_objects.children.forEach(function(cup){
+          // Here you can apply the same properties to every cup.
+          cup.anchor.setTo(0.5,0.5);
+          });
+
+          some_objects.setAll('body.immovable', true);
+
+          // WATER
+          water = game.add.sprite(0, game.world.height - 308, 'water');
+          game.physics.arcade.enable(water);
+          water.alpha = 0.3;
+
+          water_small = game.add.sprite(0, game.world.height - 310, 'water_small');
+          game.physics.arcade.enable(water_small);
+          water_small.alpha = 0;
+          water_small.body.immovable= true;
+
+          player.swimming = false;
+
+          // BUBBLES
+
+          bubble = game.add.physicsGroup();   //456x163
+          bubble.enableBody = true;
+
+          b1 = bubble.create(536, game.world.height - 104, 'bubble'); //90x90
+          b2 = bubble.create(1000, game.world.height - 190, 'bubble');  //
+          b3 = bubble.create(1700, game.world.height - 230, 'bubble');
+
+          b1.anchor.setTo(0.4, 0.4); //-36
+          b2.anchor.setTo(0.4, 0.4);
+          b3.anchor.setTo(0.4, 0.4);
+
+          bubble.moving = false;
+
+          bubble.setAll('body.immovable', true);
+
+          // BATHROOM STEP
+
+          bathroom_step = game.add.physicsGroup();   //456x163
+          bathroom_step.enableBody = true;
+
+          bathroom_step.create(0, game.world.height - 293 , 'bathroom_ground'); //300x300
+          bathroom_step.create(300, game.world.height - 165 , 'bathroom_step');  //150x150
+
+          bathroom_step.create(1896, game.world.height - 300, 'bathroom_ground_3'); //300x300
+          bathroom_step.create(1746, game.world.height - 165, 'bathroom_step');
+
+          bathroom_step.setAll('body.immovable', true);
+
+          bathroom_step.children.forEach(function(batt){
+          batt.alpha = 0;
+        });
+
+          // GIANT
+
+          /*giant = game.add.sprite(600, game.world.height - 270, 'giant');  //720x435
+          game.physics.arcade.enable(giant);
+          giant.body.immovable= true;*/
+
+          // BEANS
+          bean = game.add.physicsGroup();
+          bean.enableBody = true;
+
+          bean.create(900, game.world.height - 100 -30, 'brillo');
+          bean.create(1260, game.world.height - 360 -30, 'brillo');
+          bean.create(1620, game.world.height - 100 -30, 'brillo');
+
+          //game.physics.arcade.enable(door);
+
+          // HUD
+
+          /*score_BeanText = game.add.text(16, game.world.height - 600, 'Remaining beans: 3', { fontSize: '32px', fill: '#FFF' });
+          score_BeanText.fixedToCamera = true;
+          score_BeanText.cameraOffset.setTo(16, 150);
+          console.log(score_BeanText);*/
+
+          //weapon.trackSprite(player, 23, 25, true);
+
+          /*game.time.events.add(Phaser.Timer.SECOND * 1, destroyWeapon, this);
+          function destroyWeapon () {
+             weapon.bullets.destroy();
+          }*/
+          /*game.time.events.loop(1000, destroyWeapon);
+          function destroyWeapon () {
+             weapon.destroy();
+          }*/
+
+          explosions = game.add.group();
+          explosions.createMultiple(30, 'blood');
+          explosions.forEach(setupInvader, this);
+
+          function setupInvader (player) {
+             player.anchor.x = 0.5;
+             player.anchor.y = 0.5;
+             player.animations.add('blood');
+          }
+
+          // BEANS 128x128
+
+          bean.setAll('body.immovable', true);  // VA DOPO LE PIATTAFORME
+
+          // BEAN animations
+
+          bean.createMultiple(30, 'brillo');
+          bean.forEach(setupbean, this);
+
+          function setupbean (bean) {
+             bean.anchor.x = 0.5;
+             bean.anchor.y = 0;
+             bean.animations.add('brillo');
+             bean.animations.play('brillo', 15, true);
+          }
+          energy = game.add.group();
+          energy.createMultiple(30, 'energy_bean');
+          energy.forEach(setupBean, this);
+
+          function setupBean (bean) {
+             bean.anchor.x = 0.3;
+             bean.anchor.y = 0.3;
+             bean.animations.add('energy_bean');
+          }
+          /*window.onkeydown = function(event) {
+
+            if (event.keyCode == 27)
+            {
+              game.paused = !game.paused;
+
+              controls = game.add.sprite(0, 0, 'controls_page');
+              controls.anchor.set(0);
+              controls.inputEnabled = true;
+              //controls.events.onInputDown.add(this.imageClick, this);
+            }
+          }*/
+
+
+          player.jumping = true;
+
+          cursors = game.input.keyboard.createCursorKeys();
+          jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+          superJumpButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+          pauseESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+          goToLv1 = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+          goToLv2 = game.input.keyboard.addKey(Phaser.Keyboard.W);
+          goToLv3 = game.input.keyboard.addKey(Phaser.Keyboard.E);
+          goToCover = game.input.keyboard.addKey(Phaser.Keyboard.R);
+          goToTut = game.input.keyboard.addKey(Phaser.Keyboard.T);
+          /*fireButton = game.input.keyboard.addKey(Phaser.Keyboard.F);*/
+
+          game.paused = false;
+
+          ///////////////////////////////////////////////////////////////// CAMERA
+          player.moving = false;
+          player.mmmoving = true;
+          player.scening = true;
+
+          game.camera.x = 0;
+          game.camera.y = 645;
+
+          score_block = 1;
+
+
+          //game.camera.follow(player); // camera segue omino
+
+
+             //game.camera.deadzone = new Phaser.Rectangle(0, game.world.height - 500, 100, 500); // 3 6 2 1
+             //zone = game.camera.deadzone;
+          },
+
+update: function() {
+
+
+
+  if (player.body.position.x > 330 && player.body.position.x < 450 && player.body.position.y > 660 && player.mmmoving == true)
+  {
+    player.moving = true;
+    game.camera.x += 10;
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 0;
+
+
+
+  }
+          /*if (player.moving == false)
+          {
+            game.camera.follow(player);
+          }*/
+         if (player.moving == true)
+          {
+            game.time.events.add(Phaser.Timer.SECOND * 6, cameraBack, this);
+            function cameraBack () {
+              player.mmmoving = false;
+              game.camera.follow(player);
+              player.moving = false;
+               //game.camera.x -= 10;
+               game.time.events.add(Phaser.Timer.SECOND * 3, cameraBack2, this);
+               function cameraBack2 () {
+
+                 //game.camera.follow(player);
+               }
+
+            }
+          }
+          /////////////////////////////////////// CAMERA game.camera.deadzone = new Phaser.Rectangle(100, 100, 600, 400);
+
+
+          zzz.body.velocity.x = -100; //150x151
+          zzz.scale.x += 0.0004;
+          zzz.scale.y += 0.0004;
+
+          if (zzz.body.position.x < 100)
+          {
+            zzz.body.position.x = zzzX;
+            zzz.body.position.y = zzzY;
+            zzz.scale.setTo(0.1,0.1);
+          }
+          /////////////////////////////// UP and DOWN
+          if (zzz.moving === false)
+          {
+
+              zzz.body.velocity.y = -50;
+
+            if (zzz.body.position.y < 232)
+            {
+              zzz.moving = true;
+            }
+          }
+          if (zzz.moving === true)
+          {
+            zzz.body.velocity.y = +50;
+            if (zzz.body.position.y > 400)
+            {
+              zzz.moving = false;
+            }
+          }
+
+          game.time.events.add(Phaser.Timer.SECOND * 2, zzzappear, this);
+          function zzzappear () {
+            zzz_2.body.velocity.x = -90; //150x151
+            zzz_2.scale.x += 0.0003;
+            zzz_2.scale.y += 0.0003;
+          }
+          if (zzz_2.body.position.x < 100)
+          {
+            zzz_2.body.position.x = zzzX;
+            zzz_2.body.position.y = zzzY;
+            zzz_2.scale.setTo(0.1,0.1);
+          }
+          ///////////////////////// UP and Down
+          if (zzz_2.moving === false)
+          {
+
+              zzz_2.body.velocity.y = -40;
+
+            if (zzz_2.body.position.y < 232)
+            {
+              zzz_2.moving = true;
+            }
+          }
+          if (zzz_2.moving === true)
+          {
+            zzz_2.body.velocity.y = +40;
+            if (zzz_2.body.position.y > 400)
+            {
+              zzz_2.moving = false;
+            }
+          }
+
+          game.time.events.add(Phaser.Timer.SECOND * 4, zzz3appear, this);
+          function zzz3appear () {
+            zzz_3.body.velocity.x = -80; //150x151
+            zzz_3.scale.x += 0.0003;
+            zzz_3.scale.y += 0.0003;
+          }
+          if (zzz_3.body.position.x < 100)
+          {
+            zzz_3.body.position.x = zzzX;
+            zzz_3.body.position.y = zzzY;
+            zzz_3.scale.setTo(0.1,0.1);
+          }
+          ///////////////////////// UP and Down
+          if (zzz_3.moving === false)
+          {
+
+              zzz_3.body.velocity.y = -50;
+
+            if (zzz_3.body.position.y < 232)
+            {
+              zzz_3.moving = true;
+            }
+          }
+          if (zzz_3.moving === true)
+          {
+            zzz_3.body.velocity.y = +50;
+            if (zzz_3.body.position.y > 400)
+            {
+              zzz_3.moving = false;
+            }
+          }
+
+          //platformBounce.angle += 0.5;   // PER RUOTARE NEL TEMPO
+
+          window.onkeydown = function(event) {
+
+            if (event.keyCode == 27)
+            {
+              game.paused = !game.paused;
+
+              if(game.paused){
+
+              }
+              if(!game.paused){
+
+              }
+
+
+            }
+          }
+
+          game.physics.arcade.overlap(player, exit_2, this.collect_exit_2, null, this);
+          game.physics.arcade.overlap(player, bean, this.collectbean, null, this);
+          game.physics.arcade.overlap(player, mouse, this.mouseDeath, null, this);
+          var ww = game.physics.arcade.overlap(player, water, this.swimming, null, this);
+          var p_bubble = game.physics.arcade.overlap(player, bubble, this.bubble_oxygen, null, this);
+          var water_slow = game.physics.arcade.overlap(player, water_small);
+          game.physics.arcade.collide(player, razor);
+          //game.physics.arcade.overlap(player, duckie, this.duckieDeath, null, this);
+          game.physics.arcade.overlap(player, duckie_1, this.duckieDeath_1, null, this);
+          game.physics.arcade.overlap(player, duckie_2, this.duckieDeath_2, null, this);
+          game.physics.arcade.overlap(player, duckie_3, this.duckieDeath_3, null, this);
+          game.physics.arcade.overlap(player, duckie_4, this.duckieDeath_4, null, this);
+          game.physics.arcade.overlap(player, braccio, this.deathbraccio, null, this);
+
+          game.physics.arcade.collide(player, bathroom_step);
+          game.physics.arcade.collide(mouse, bathroom_step);
+          var hitToothbrush = game.physics.arcade.collide(player, toothbrush);
+
+          var hitrubinetto = game.physics.arcade.collide(player, rubinetto);
+
+          if (hitrubinetto == true && player.body.touching.down && rubinetto.body.touching.up)
+          {
+
+              rubinetto.animations.stop();
+              rubinetto.frame = 6;
+
+              game.time.events.add(Phaser.Timer.SECOND * 1, stopJump, this);
+              function stopJump () {
+                game.camera.fade(0x000000, 6000);
+                game.time.events.add(Phaser.Timer.SECOND * 6, finalon, this);
+                function finalon () {
+
+                  this.game.state.start('Final');
+                }
+
+              }
+
+          }
+
+          /*var tap_tub_1 = game.physics.arcade.collide(tap_water_1, tap_destroy);
+          var tap_tub_2 = game.physics.arcade.collide(tap_water_2, tap_destroy);
+          var tap_tub_3 = game.physics.arcade.collide(tap_water_3, tap_destroy);*/
+
+          player.body.velocity.x = player.body.velocity.x*0.9; // ATTRITO
+
+          if (player.moving == false)
+          {
+             player.body.gravity.y = 600; //500
+          }
+
+
+          //mouse.body.velocity.x = mouse.body.velocity.x*0.9;
+          player.body.velocity.x = 0;
+
+          // DUCKIE IN THE WATER
+
+          // duckie_1 ----- 600, game.world.height - 370, 'duckie_1'
+
+          if(duckie_1.body.position.y<game.world.height-368){
+              duckie_1.body.velocity.y=7*0.9;
+              duckie_1.body.velocity.x=2.5*0.9*Math.random();
+            }
+          if(duckie_1.body.position.y > game.world.height-362){
+              duckie_1.body.velocity.y=-7*0.9;
+              duckie_1.body.velocity.x=-2.5*0.9*Math.random();
+            }
+            game.time.events.add(Phaser.Timer.SECOND * 0.5, duckieMove, this);
+            function duckieMove () {
+            if(duckie_2.body.position.y<game.world.height-368){
+                duckie_2.body.velocity.y=7*0.9;
+                duckie_2.body.velocity.x=2.5*0.9*Math.random();
+              }
+            if(duckie_2.body.position.y > game.world.height-362){
+                duckie_2.body.velocity.y=-7*0.9;
+                duckie_2.body.velocity.x=-2.5*0.9*Math.random();
+              }
+            }
+            game.time.events.add(Phaser.Timer.SECOND * 0.8  , duckie3Move, this);
+            function duckie3Move () {
+            if(duckie_3.body.position.y<game.world.height-368){
+                duckie_3.body.velocity.y=7*0.9;
+                duckie_3.body.velocity.x=2.5*0.9*Math.random();
+              }
+            if(duckie_3.body.position.y > game.world.height-362){
+                duckie_3.body.velocity.y=-7*0.9;
+                duckie_3.body.velocity.x=-2.5*0.9*Math.random();
+              }
+            }
+            game.time.events.add(Phaser.Timer.SECOND * 0.5  , duckie4Move, this);
+            function duckie4Move () {
+            if(duckie_4.body.position.y<game.world.height-368){
+                duckie_4.body.velocity.y=7*0.9;
+                duckie_4.body.velocity.x=2.5*0.9*Math.random();
+              }
+            if(duckie_4.body.position.y > game.world.height-362){
+                duckie_4.body.velocity.y=-7*0.9;
+                duckie_4.body.velocity.x=-2.5*0.9*Math.random();
+              }
+            }
+
+          /*if (water_slow === true)
+          {
+            if (cursors.left.isDown)
+            {
+                //player.body.velocity.x = -350;
+                player.animations.play('left');
+            }
+            else if (cursors.right.isDown){
+                 //player.body.velocity.x = 150;
+                 player.animations.play('right');
+              }
+              else
+              {
+                   player.animations.stop();
+                   player.frame = 4;
+              }
+          }*/
+          ///////////////////////////////////////////////////// MINI CUTSCENE
+          if (score_block == 1)
+          {
+            if (player.body.position.x <340 && player.scening == true)
+            {
+              game.time.events.add(Phaser.Timer.SECOND * 4, stopCutscene, this);
+              function stopCutscene () {
+                score_block += 1;
+              }
+              player.body.velocity.x = 150;
+              player.animations.play('right');
+              game.time.events.add(Phaser.Timer.SECOND * 1.1, ctjump, this);
+              function ctjump () {
+                if (player.jumping == true)
+                {
+                  player.body.velocity.y = -300;
+                  game.time.events.add(Phaser.Timer.SECOND * 0.13, stopJump, this);
+                  function stopJump () {
+                    player.jumping = false;
+                  }
+                }
+
+              }
+
+            }
+          }
+
+          ////////////////////////// MOUSE  mouse.animations.play('right'); ???
+          mouse.animations.play('right');
+          if (mouse.body.position.x <130)
+          {
+            mouse.body.velocity.x = 200;
+          }
+          else
+          {
+            mouse.body.velocity.x = 0;
+          }
+
+
+          if (player.body.position.x > 340)
+          {
+            player.scening = false;
+          }
+
+          if (player.body.position.y < game.world.height - 335)
+          {
+            player.swimming = false;
+          }
+          if (player.swimming === false)  // NO WATER
+          {
+          if (jumpButton.isDown  && player.body.velocity.y == 0 && (player.body.onFloor() || player.body.touching.down))
+          {
+              player.body.velocity.y = -300;
+          }
+          }
+          if (player.body.position.x > 297 && player.body.position.x < 1900 && player.body.position.y > game.world.height - 340 && player.body.position.y < game.world.height - 270 )
+          {
+            player.body.gravity.y = 0;
+            if (!jumpButton.isDown && player.moving == false )
+            {
+              player.body.velocity.y = 0;
+            }
+            if (cursors.down.isDown && player.moving == false )
+            {
+                player.body.velocity.y = 80*0.9;
+            }
+            if (cursors.left.isDown && player.moving == false )
+            {
+                player.body.velocity.x = -110*0.9;
+            }
+            else if (cursors.right.isDown && player.moving == false )
+            {
+                player.body.velocity.x = 110*0.9;
+            }
+          }
+          if (player.body.position.y > game.world.height - 340 && player.body.position.y < game.world.height - 308 && player.moving == false)
+          {
+            player.jumping = true;
+          }
+          if (player.body.position.y > game.world.height - 308 && player.moving == false)
+          {
+            player.jumping = false;
+          }
+          if ( player.body.position.x > 297 && player.body.position.x < 1900 && player.moving == false)
+          {
+            if (jumpButton.isDown && player.jumping == true)
+            {
+              //jumpTime = game.time.now
+              player.body.velocity.y = -300;
+              game.time.events.add(Phaser.Timer.SECOND * 0.11, stopJump, this);
+              function stopJump () {
+                player.jumping = false;
+              }
+            }
+          }
+
+
+          if (player.swimming === false && water_slow === false && player.moving == false)  // NO WATER
+          {
+          if (cursors.left.isDown)
+          {
+              player.body.velocity.x = -250;
+              player.animations.play('left');
+          }
+          else if (cursors.right.isDown){
+               player.body.velocity.x = 250;
+               player.animations.play('right');
+            }
+            else
+            {
+                 player.animations.stop();
+                 player.frame = 4;
+            }
+          }
+          else if (player.swimming === true) // WATER
+          {
+
+            //player.body.velocity.x = Math.random()*40*0.9;
+            //player.body.velocity.y = Math.random()*40;
+            if (cursors.left.isDown)
+            {
+                player.body.velocity.x = -110*0.9;
+                player.body.velocity.y = -10*0.9;
+                player.animations.play('swimsx', [9, 10, 11, 12], 10, true);
+            }
+            else if (cursors.right.isDown)
+            {
+                player.body.velocity.x = 110*0.9;
+                player.body.velocity.y = -10*0.9;
+                player.animations.play('swimdx', [14, 15, 16, 17], 10, true);
+            }
+            if (cursors.up.isDown)
+            {
+                player.body.velocity.y = -80*0.9;
+            }
+            else if (cursors.down.isDown)
+            {
+                player.body.velocity.y = 80*0.9;
+            }
+            /*else if (cursors.up.isDown && cursors.right.isDown)
+            {
+                player.body.velocity.y = -80*0.9;
+                player.body.velocity.x = 80*0.9;
+            }*/
+          }
+
+          /*if (player.swimming === false && player.body.position.x > 300 && oxygen.width < 248 )  // NO WATER
+          {
+          oxygen.width += 1;
+        }*/
+          ///////////////////////////////////////////// OXYGEN BAR
+          if (player.swimming === false && player.body.position.x > 100 && oxygen.width < 247/1.3 )  // NO WATER
+          {
+          oxygen.width += 4/1.3;
+          //oxygen.width = 248;
+          }
+          if (oxygen.width > 163/1.3)
+          {
+            oxygen.tint = 0xffffff;
+          }
+          if (oxygen.width < 163/1.3)
+          {
+            oxygen.tint = 0xe2d66e;
+          }
+          if (oxygen.width < 61/1.3)
+          {
+            oxygen.tint = 0xeb3a2c;
+          }
+          if (player.swimming === false)  // NO WATER
+          {
+          if (superJumpButton.isDown && player.body.touching.down)
+          {
+            if(score_Bean === 0){
+                  superJump += -600;
+                  score_Bean += 3;
+                  bbar1.destroy();
+                  bbar2.destroy();
+                  bbar3.destroy();
+                }
+                if(score_Bean < 0){
+                      score_Bean += 1;
+                    }
+              player.body.velocity.y = superJump;
+              superJump = 0;
+          }
+         }
+
+
+          ///////////////////// BUBBLES
+
+          if (bubble.moving === false)
+          {
+            //razor.rotation -= 0.01;
+            razor.body.velocity.x = -70;
+            razor.body.velocity.y = +30;
+            b1.body.velocity.y = 2;
+            b1.body.velocity.x = 2;
+            b1.angle += 0.1;
+
+            b2.body.velocity.y = 2;
+            b2.body.velocity.x = 2;
+            b2.angle += 0.1;
+
+            b3.body.velocity.y = 2;
+            b3.body.velocity.x = 2;
+            b3.angle += 0.1;
+            game.time.events.add(Phaser.Timer.SECOND * 4, bubbleM, this);
+            function bubbleM () {
+              bubble.moving = true;
+            }
+          }
+          if (bubble.moving === true)
+          {
+            //razor.rotation += 0.01;
+            razor.body.velocity.x = 70;
+            razor.body.velocity.y = -30;
+            b1.body.velocity.y = -2;
+            b1.body.velocity.x = -2;
+            //b1.angle -= 0.1;
+            b1.angle += 0.1;
+
+            b2.body.velocity.y = -2;
+            b2.body.velocity.x = -2;
+            b2.angle += 0.1;
+
+            b3.body.velocity.y = -2;
+            b3.body.velocity.x = -2;
+            b3.angle += 0.1;
+            game.time.events.add(Phaser.Timer.SECOND * 4, bubbleM, this);
+            function bubbleM () {
+              bubble.moving = false;
+            }
+          }
+          ///////////////////// OBJECTS IN THE WATER
+
+          if (bubble.moving === false)
+          {
+            toothbrush.body.velocity.y = 30*0.9;
+            //toothbrush.body.velocity.x = 4;
+            //toothbrush.angle += 0.1;
+            game.time.events.add(Phaser.Timer.SECOND * 4, bubbleM, this);
+            function bubbleM () {
+              bubble.moving = true;
+            }
+          }
+          if (bubble.moving === true)
+          {
+            toothbrush.body.velocity.y = -30*0.9;
+            //toothbrush.body.velocity.x = -4;
+            //b1.angle -= 0.1;
+            //toothbrush.angle += 0.1;
+            game.time.events.add(Phaser.Timer.SECOND * 4, bubbleM, this);
+            function bubbleM () {
+              bubble.moving = false;
+            }
+          }
+          ////////////////////// ZZZ
+
+
+
+          /////////////////////////////////////////////// TAP WATER
+
+          /*tap_water_1.body.velocity.y = 250;
+          tap_water_2.body.velocity.y = 190;
+          tap_water_3.body.velocity.y = 210;
+          if (tap_tub_1 == true)
+          {
+            tap_water_1.body.position.x = tapX;
+            tap_water_1.body.position.y = tapY;
+          }
+          if (tap_tub_2 == true)
+          {
+            tap_water_2.body.position.x = tapX_2;
+            tap_water_2.body.position.y = tapY_2;
+          }
+          if (tap_tub_3 == true)
+          {
+            tap_water_3.body.position.x = tapX_3;
+            tap_water_3.body.position.y = tapY_3;
+          }*/
+          /////////////////////////////// TUB PLATFORM
+
+          if (player.body.position.y < tub_platform.body.position.y -50)
+          {
+            tub_platform.bodying = true;
+            var hitTub = game.physics.arcade.collide(player, tub_platform);
+          }
+          if (jumpButton.isDown && hitTub)
+          {
+              player.body.velocity.y = -300;
+          }
+
+          //////////////////////////////////////////////////// FAGIOLO
+
+          if(score_Bean <= 0)
+          {
+          fagiolo_1.animations.play('active');
+          }
+          else
+          {
+            fagiolo_1.animations.play('fixed');
+          }
+          ////////////////////////////////////////////////// PAUSE
+          /*if(pauseESC.isDown && game.paused === false)
+          {
+               game.paused = true;
+               controls = game.add.sprite(0, 0, 'controls');
+               controls.anchor.set(0);
+               controls.inputEnabled = true;
+               //controls.events.onInputDown.add(this.imageClick, this);
+
+          }*/
+          ///////////////////// SHORTCUTS
+          if (goToTut.isDown)
+          {
+              this.game.state.start('Tutorial');
+          }
+          if (goToLv1.isDown)
+          {
+              this.game.state.start('Game1');
+          }
+          if (goToLv2.isDown)
+          {
+              this.game.state.start('Game2');
+          }
+          if (goToLv3.isDown)
+          {
+              this.game.state.start('Game3');
+          }
+          if (goToCover.isDown)
+          {
+              this.game.state.start('Start');
+          }
+        },
+          collectbean: function (player, bean) {
+            bean.kill();
+
+            var Energy = energy.getFirstExists(false);
+            Energy.reset(bean.body.x, bean.body.y);
+            Energy.play('energy_bean', 30, false, true);
+
+            //  Add and update the score
+            score_Bean--;
+            //score_BeanText.text = 'Remaining beans: ' + score_Bean;
+            /*if(score_Bean === 0){
+                  superJump += -600;
+                  score_Bean += 3;
+                }*/
+            if(score_Bean === 2)
+            {
+            bean_bar_1 = game.add.graphics(71 -30 -20, 51 -18.3);
+            bean_bar_1.fixedToCamera = true;
+            bean_bar_1.beginFill(0x9bf380, 1);
+            bbar1 = bean_bar_1.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+            bean_bar_1.endFill();
+            }
+            if(score_Bean === 1)
+            {
+            bean_bar_2 = game.add.graphics(154 -30 -20 -19, 51 -18.3);
+            bean_bar_2.fixedToCamera = true;
+            bean_bar_2.beginFill(0x9bf380, 1);
+            bbar2 = bean_bar_2.drawRect(1, 1, 80/1.3, 12/1.3); //247x13
+            bean_bar_2.endFill();
+            }
+            if(score_Bean === 0)
+            {
+            bean_bar_3 = game.add.graphics(237 -30 -20 -38, 51 -18.3);
+            bean_bar_3.fixedToCamera = true;
+            bean_bar_3.beginFill(0x9bf380, 1);
+            bbar3 = bean_bar_3.drawRect(1, 1, 81/1.3, 12/1.3); //247x13
+            bean_bar_3.endFill();
+            }
+          },
+          swimming: function (player, water)
+          {
+            player.swimming = true;
+            if (player.moving == false)
+            {
+              player.body.velocity.y = 30;
+
+              if (oxygen.width > 0){
+              oxygen.width -= 0.8;
+              }
+              if (oxygen.width < 2){
+
+                  this.game.state.start('Bad3');
+              }
+            }
+
+
+            /*game.time.events.add(Phaser.Timer.SECOND * 0.2, noVelocity, this);
+            function noVelocity () {
+              player.body.velocity.y = 0;
+              player.body.gravity.y = 0;
+          }*/
+            /*oxygen -= 50;
+            oxygen_bar.cropEnabled = true;
+            oxygen_bar.crop.width = (oxygen / maxOxygen) * oxygen_bar.width;*/
+          },
+
+          mouseDeath: function (player, mouse) {
+
+
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x, player.body.y);
+            explosion.play('blood', 30, false, true);
+
+            game.time.events.add(Phaser.Timer.SECOND * 1, badStateOn, this);
+            function badStateOn () {
+              this.game.state.start('Bad3');
+            }
+          },
+
+          deathbraccio: function (player, braccio) {
+
+              this.game.state.start('Bad4');
+
+          },
+
+          bubble_oxygen: function (player, bubble)
+          {
+            if (oxygen.width <247/1.3){
+            oxygen.width += 4;
+            }
+          },
+          duckieDeath_1: function (player, duckie_1) {
+
+
+          quack_1.alpha = 1;
+          game.time.events.add(Phaser.Timer.SECOND * 0.8, qua, this);
+          function qua () {
+            this.game.state.start('Bad4');
+          }
+
+          },
+          duckieDeath_2: function (player, duckie_2) {
+
+            game.time.events.add(Phaser.Timer.SECOND * 0.8, qua, this);
+            function qua () {
+              this.game.state.start('Bad4');
+            }
+          quack_2.alpha = 1;
+          },
+          duckieDeath_3: function (player, duckie_3) {
+
+            game.time.events.add(Phaser.Timer.SECOND * 0.8, qua, this);
+            function qua () {
+              this.game.state.start('Bad4');
+            }
+          quack_3.alpha = 1;
+          },
+          duckieDeath_4: function (player, duckie_4) {
+
+            game.time.events.add(Phaser.Timer.SECOND * 0.8, qua, this);
+            function qua () {
+              this.game.state.start('Bad4');
+            }
+          quack_4.alpha = 1;
+          },
+
+render: function() {
+
+          //game.debug.cameraInfo(game.camera, 500, 32); //dati posizione ecc.
+          //game.debug.spriteCoords(player, 32, 32);
+          //game.debug.body(toothbrush);
+          //game.debug.body(tub_platform);
+          //game.debug.body(mouse);
+          //game.debug.body(player_head);
+          //game.debug.body(platformBounce);
+          //weapon.debug();
+          //game.debug.geom(zone,'#0fffff');
+
+}
+
+}  //Gamestate3
+
+game.state.add('Game3', Game3State);
+
+var GoodState = {
+        preload: function() {
+            game.load.crossOrigin = 'anonymous';
+            game.load.image('open', 'http://127.0.0.1/img/castle_open.png');
+            game.load.image('freccia_n', 'http://127.0.0.1/img/freccia_n.png');
+        },
+
+        create: function() {
+            game.world.setBounds(0, 0, 1024, 768);
+
+            image = game.add.sprite(0, 0, 'open');
+            //image = game.add.sprite(game.world.centerX, game.world.centerY, 'open');
+            //image.anchor.set(0.5);
+            image.inputEnabled = true;
+            image.events.onInputDown.add(this.imageClick, this);
+            freccia_n = game.add.sprite(900, 690, 'freccia_n');
+            freccia_n.inputEnabled = true;
+            freccia_n.events.onInputDown.add(this.freccia_nClick, this);
+        },
+
+        imageClick: function(pointer) {
+            this.game.state.start('Game2');
+        },
+        freccia_nClick: function(pointer) {
+            this.game.state.start('Game2');
+        },
+      }
+
+
+
+game.state.add('Good', GoodState);
+
+////////////////////////////////////////////////////// FINAL STATE
+
+var FinalState = {
+        preload: function() {
+           game.stage.backgroundColor = '#000000';
+            game.load.crossOrigin = 'anonymous';
+            game.load.image('fine', 'http://127.0.0.1/img/fine.png');
+            game.load.image('home', 'http://127.0.0.1/img/home.png');
+        },
+
+        create: function() {
+            game.world.setBounds(0, 0, 1024, 768);
+
+            image = game.add.sprite(0, 0, 'fine');
+
+            home = game.add.sprite(107, 24, 'home');
+            home.inputEnabled = true;
+            home.events.onInputDown.add(this.homeClick, this);
+        },
+
+        homeClick: function(pointer) {
+            this.game.state.start('Start');
+        }
+
+      }
+
+game.state.add('Final', FinalState);
+
+
+game.state.add('Game1', Game1State);
+
+var BadState = {
+    preload: function() {
+        game.load.crossOrigin = 'anonymous';
+        game.load.image('openBad', 'http://127.0.0.1/img/game%20over.png');
+        game.load.image('yes', 'http://127.0.0.1/img/yes.png');
+        game.load.image('no', 'http://127.0.0.1/img/no.png');
+    },
+
+    create: function() {
+        game.world.setBounds(0, 0, 1024, 768);
+
+        image = game.add.sprite(0, 0, 'openBad');
+
+        yes = game.add.sprite(650, 650, 'yes');
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.yesClick, this);
+
+        no = game.add.sprite(770, 650, 'no');
+        no.inputEnabled = true;
+        no.events.onInputDown.add(this.noClick, this);
+    },
+
+    yesClick: function(pointer) {
+        this.game.state.start('Game1');
+    },
+    noClick: function(pointer) {
+        this.game.state.start('Start');
+    },
+
+}
+
+game.state.add('Bad', BadState);
+
+var BadState2 = {
+    preload: function() {
+        game.load.crossOrigin = 'anonymous';
+        game.load.image('openBad', 'http://127.0.0.1/img/game%20over.png');
+        game.load.image('yes', 'http://127.0.0.1/img/yes.png');
+        game.load.image('no', 'http://127.0.0.1/img/no.png');
+    },
+
+    create: function() {
+        game.world.setBounds(0, 0, 1024, 768);
+
+        image = game.add.sprite(0, 0, 'openBad');
+
+        yes = game.add.sprite(650, 650, 'yes');
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.yesClick, this);
+
+        no = game.add.sprite(770, 650, 'no');
+        no.inputEnabled = true;
+        no.events.onInputDown.add(this.noClick, this);
+    },
+    yesClick: function(pointer) {
+        this.game.state.start('Game2');
+    },
+    noClick: function(pointer) {
+        this.game.state.start('Start');
+    },
+
+
+}
+
+game.state.add('Bad2', BadState2);
+
+var BadState3 = {
+    preload: function() {
+        game.load.crossOrigin = 'anonymous';
+        game.load.image('openBad', 'http://127.0.0.1/img/game%20over.png');
+        game.load.image('yes', 'http://127.0.0.1/img/yes.png');
+        game.load.image('no', 'http://127.0.0.1/img/no.png');
+    },
+
+    create: function() {
+        game.world.setBounds(0, 0, 1024, 768);
+
+        image = game.add.sprite(0, 0, 'openBad');
+
+        yes = game.add.sprite(650, 650, 'yes');
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.yesClick, this);
+
+        no = game.add.sprite(770, 650, 'no');
+        no.inputEnabled = true;
+        no.events.onInputDown.add(this.noClick, this);
+    },
+    yesClick: function(pointer) {
+        this.game.state.start('Game3');
+    },
+    noClick: function(pointer) {
+        this.game.state.start('Start');
+    },
+
+}
+
+game.state.add('Bad3', BadState3);
+
+var BadState4 = {
+    preload: function() {
+        game.load.crossOrigin = 'anonymous';
+        game.load.image('gameover2', 'http://127.0.0.1/img/gameover2.png');
+        game.load.image('yes', 'http://127.0.0.1/img/yes.png');
+        game.load.image('no', 'http://127.0.0.1/img/no.png');
+    },
+
+    create: function() {
+        game.world.setBounds(0, 0, 1024, 768);
+
+        image = game.add.sprite(0, 0, 'gameover2');
+
+        yes = game.add.sprite(650 + 100, 650 - 300, 'yes');
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.yesClick, this);
+
+        no = game.add.sprite(770 + 100, 650 - 300, 'no');
+        no.inputEnabled = true;
+        no.events.onInputDown.add(this.noClick, this);
+    },
+    yesClick: function(pointer) {
+        this.game.state.start('Game3');
+    },
+    noClick: function(pointer) {
+        this.game.state.start('Start');
+    },
+
+}
+
+game.state.add('Bad4', BadState4);
+
+// start the boot state
+game.state.start('Start');
+
+}
+    </script>
+
+    </body>
+</html>
