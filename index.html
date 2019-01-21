@@ -356,7 +356,7 @@ game.state.add('Start', StartState);
 
 var controlsState = {
         preload: function() {
-            game.load.crossOrigin = 'anonymous';
+            //game.load.crossOrigin = 'anonymous';
             game.load.image('controls_page', 'img/controls_page.png');
             game.load.image('backToMenu', 'img/backToMenu.png');
             game.load.image('home', 'img/home.png');
@@ -406,11 +406,11 @@ game.state.add('Controls', controlsState);
 
 var AuthorsState = {
         preload: function() {
-            game.load.crossOrigin = 'anonymous';
-            game.load.image('authors_page', 'http://127.0.0.1/img/authors_page.png');
-            game.load.image('backToMenu', 'http://127.0.0.1/img/backToMenu.png');
-            game.load.image('back', 'http://127.0.0.1/img/back.png');
-            game.load.image('home', 'http://127.0.0.1/img/home.png');
+            //game.load.crossOrigin = 'anonymous';
+            game.load.image('authors_page', 'img/authors_page.png');
+            game.load.image('backToMenu', 'img/backToMenu.png');
+            game.load.image('back', 'img/back.png');
+            game.load.image('home', 'img/home.png');
         },
 
         create: function() {
