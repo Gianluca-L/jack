@@ -4773,11 +4773,11 @@ var BadState3 = {
 
         image = game.add.sprite(0, 0, 'openBad');
 
-        yes = game.add.sprite(650, 650, 'yes');
+        yes = game.add.sprite(650, 500, 'yes');
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.yesClick, this);
 
-        no = game.add.sprite(770, 650, 'no');
+        no = game.add.sprite(770, 500, 'no');
         no.inputEnabled = true;
         no.events.onInputDown.add(this.noClick, this);
     },
